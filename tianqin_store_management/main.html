@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>主界面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        body{background: url(images/backgroud.jpg) no-repeat;background-size:cover;font-size: 16px;}
+        .form{background: rgba(255,255,255,0.2);width:400px;margin:100px auto;}
+        #login_form{display: block;}
+        #register_form{display: none;}
+        .fa{display: inline-block;top: 27px;left: 6px;position: relative;color: #ccc;}
+        input[type="text"],input[type="password"]{padding-left:26px;}
+        .checkbox{padding-left:21px;}
+    </style>
+
+    <link href="./css/logon.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/font-awesome.min.css" rel="stylesheet">
+    <link href="./css/toastr.min.css" rel="stylesheet">
+    <script src="./js/common/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="./js/common/jquery.validate.min.js" ></script>
+    <script src="jquery.pagination.js"></script>
+    <script src="./js/common/bootstrap.min.js"></script>
+    <script src="./js/common/echarts.min.js"></script>
+    <script src="./js/main.js"></script>
+    <!--<script src="./css/fileinput.min.css"></script>-->
+    <script src="./js/common/ajaxfileupload.js"></script>
+    <script src="./js/common/toastr.min.js"></script>
+    <!--<script src="./js/common/fileinput_locale_zh.js"></script>-->
+</head>
+
+<body>
+<div id="main-menu">
+    <div class="headerBar ms_page-header">
+        <div class="logoInfo" style="padding-left: 40px; display: inline-block">
+            <h1><img id="logoImg" src="./images/logo.jpg" width="65" height="65">&nbsp;&nbsp;宝莱坞店</h1>
+        </div>
+        <div class="right" style="float: right; display: inline-block; padding-right: 130px; padding-top: 30px;">
+            <div class="aboutUs"><a href="#">关于我们</a></div>
+            <div class="logout-button"><button type="button" class="btn btn-primary" onclick="javascript:logout();">退出系统</button></div>
+        </div>
+    </div>
+    <div class="mainContent">
+        <ul class="nav tabs-left">
+            <li><a class="dp-btn dp-btn-default no_hover" href="#tab1" data-toggle='tab'>我&nbsp;的&nbsp;桌&nbsp;面</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab4' onclick="javascript:initGoodsCateTab();" data-toggle='tab'>消&nbsp;费&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab2' data-toggle='tab'>商&nbsp;品&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab3' data-toggle='tab'>员&nbsp;工&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab5' data-toggle='tab'>报&nbsp;表&nbsp;中&nbsp;心</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab6' data-toggle='tab'>系&nbsp;统&nbsp;设&nbsp;置</a></li>
+        </ul>
+        <div class="menu-content">
+            <div class="tab-pane mydesk" id="tab1">
+                <div class="tab-content-title">
+                    <h4 class="today_kpi">今日关键指标</h4>
+                    <div class="refresh">
+                        <button type="button" style="width: 80px;" class="btn btn-primary">刷&nbsp;&nbsp;新</button>
+                    </div>
+                </div>
+                <div class="kpi-detail">
+                    <div class="total_revenue">
+                        <ul style="list-style: none; float: left; margin-left:30px; font-size: 16px;">
+                            <li><img src=""><span>营业额</span></li>
+                            <li><span>昨&nbsp; &nbsp;日</span></li>
+                            <li><span>本&nbsp;&nbsp;周</span></li>
+                            <li><span>本&nbsp;&nbsp;月</span></li>
+                        </ul>
+                        <ul style="list-style: none; float:left; margin-left: 30px; font-size: 16px;">
+                            <li style="font-weight: normal">3650</li>
+                            <li style="font-weight: normal">3650</li>
+                            <li style="font-weight: normal">3650</li>
+                            <li style="font-weight: normal">3650</li>
+                        </ul>
+                    </div>
+                    <div class="consumer_num">
+                        <ul style="list-style: none; float: left;  margin-left: 40px; font-size: 16px;">
+                            <li style="font-weight: normal"><img src=""><span>客单数</span></li>
+                            <li style="font-weight: normal"><span>昨&nbsp;&nbsp;日</span></li>
+                            <li style="font-weight: normal"><span>本&nbsp;&nbsp;周</span></li>
+                            <li style="font-weight: normal"><span>本&nbsp;&nbsp;月</span></li>
+                        </ul>
+                        <ul style="list-style: none; float: left; margin-left: 30px; font-size: 16px;">
+                            <li style="font-weight: normal"><img src="">800</li>
+                            <li style="font-weight: normal">78</li>
+                            <li style="font-weight: normal">325</li>
+                            <li style="font-weight: normal">1250</li>
+                        </ul>
+                    </div>
+
+                    <div class="payment-ways">
+                        <ul style="list-style: none; float: left;  margin-left: 30px; font-size: 16px;">
+                            <li><img src=""><span>收款类型</span></li>
+                            <li><span>会员卡</span></li>
+                            <li><span>现&nbsp;金</span></li>
+                            <li><span>积&nbsp;分</span></li>
+                        </ul>
+                        <ul style="list-style: none; float: left;margin-left: 20px; font-size: 16px;">
+                            <li style="font-weight: normal">&nbsp;&nbsp;</li>
+                            <li style="font-weight: normal">78</li>
+                            <li style="font-weight: normal">325</li>
+                            <li style="font-weight: normal">1250</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="view-button" >
+                    <div id="turnoverBtn"><button type="button" class="btn btn-primary">营业额</button></div>
+                    <div id="consumerBtn"><button type="button" class="btn btn-primary">客单数</button></div>
+                </div>
+                <div id="turnover-chart" class="summary_chart" style="display: none;"></div>
+                <div id="consumer-chart" class="summary_chart" style="display: none;"></div>
+                <div><span>&nbsp;&nbsp;</span></div>
+            </div>
+            <div class="tab-pane goods-management" id="tab2" style="display: none">
+                <h4 class="title">商品管理</h4>
+                <div class="operation_button">
+                    <div class="query_opera" style="">
+                        <div style="float: left">
+                            <label for="con_goods_name" class="condition_label">名称</label>
+                            <input type="text" class="con_select form-control" id="con_goods_name" placeholder="请输入商品名称">
+                        </div>
+                        <div style="float: left">
+                            <label class="condition_label">类别</label>
+                            <select id="con_goods_cate" class="con_select">
+                                <option>类别1</option>
+                                <option>类别2</option>
+                                <option>类别3</option>
+                            </select>
+                        </div>
+                        <div class="search_button mg_left"><button type="button" class="btn btn-primary">查&nbsp;询</button></div>
+                    </div>
+                    <div class="add_button  mg_left" style="margin-left: 30px;"><button type="button" class="btn btn-primary">+ 新&nbsp;增</button></div>
+                    <div class="delete_button mg_left"><button type="button" class="btn btn-primary">× 删&nbsp;除</button></div>
+                    <div class="update_button mg_left"><button type="button" class="btn btn-primary">◆ 修&nbsp;改</button></div>
+                    <div class="cate_maintain mg_left"><button type="button" class="btn btn-primary">类别维护</button></div>
+                </div>
+                <div class="goods_table">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>序&nbsp;号</th>
+                            <th>商品名称</th>
+                            <th>单&nbsp;价</th>
+                            <th>成&nbsp;本</th>
+                            <th>单&nbsp;位</th>
+                            <th>折&nbsp;扣</th>
+                            <th>商品类别</th>
+                            <th>提成方式</th>
+                            <th>提成金额</th>
+                            <th>提成比例</th>
+                            <th>备&nbsp;注</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="goodsNo" style="text-align: left">1</td>
+                                <td class="goodsName">男士袜子</td>
+                                <td class="goodsUnitPrice">30</td>
+                                <td class="goodsCost">20</td>
+                                <td class="goodsUnit">双</td>
+                                <td class="goodsDeduct">双</td>
+                                <td class="goodsCate">服饰类</td>
+                                <td class="deductWays">固定金额</td>
+                                <td class="deductMoney">提成金额</td>
+                                <td class="deductRate">提成比例</td>
+                                <td class="goodsMark">仅会员打折</td>
+                            </tr>
+                            <tr>
+                                <td class="goodsNo" style="text-align: left">1</td>
+                                <td class="goodsName">男士袜子</td>
+                                <td class="goodsUnitPrice">30</td>
+                                <td class="goodsCost">20</td>
+                                <td class="goodsUnit">双</td>
+                                <td class="goodsDeduct">100%</td>
+                                <td class="goodsCate">服饰类</td>
+                                <td class="deductWays">固定金额</td>
+                                <td class="deductMoney">提成金额</td>
+                                <td class="deductRate">提成比例</td>
+                                <td class="goodsMark">仅会员打折</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--添加商品对话框-->
+                <div class="modal fade" id="addGoodsModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="addModalLabel">新增商品</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="uploading-file">
+                                    <label class="goods_info_label">图片上传：</label>
+                                    <input id="uploadGoodsImage" style="float: left;" type="file" class="form-control">
+                                    <button style="float: left; width: 80px; height: 40px; margin-left: 20px;" class="btn btn-primary" type="submit">确定上传</button>
+                                </div>
+                                <div class="goods-form-group" style="margin-top: 5px">
+                                    <label for="goodsName" class="goods_info_label">商品名称</label>
+                                    <input type="text" name="goodsName" id="goodsName" class="form-control goods_left_info">
+                                </div>
+                                <div class="goods-form-group" style="margin-top: 5px">
+                                    <label for="goodsUnitPrice" class="goods_info_label">单&nbsp;&nbsp;价</label>
+                                    <input type="text" name="goodsUnitPrice" id="goodsUnitPrice" class="form-control goods_left_info">
+                                </div>
+                                <div class="goods-form-group" style="margin-top: 5px">
+                                    <label for="goodsCosts" class="goods_info_label">商品成本</label>
+                                    <input type="text" name="goodsCosts" id="goodsCosts" class="form-control goods_left_info">
+                                </div>
+                                <div class="goods-form-group" style="margin-top: 5px">
+                                    <label for="goodsRates" class="goods_info_label">折扣&nbsp;率</label>
+                                    <input type="text" name="goodsRates" id="goodsRates" class="form-control goods_left_info">
+                                </div>
+                                <div class="goods-form-group" style="margin-top: 5px">
+                                    <label for="goodsUnitSlect" class="goods_info_label">单&nbsp;&nbsp;位</label>
+                                    <select id="goodsUnitSlect" style="width: 150px; height: 40px;" name="goodsUnitSlect" class="form-control goods_left_info">
+                                        <option>次</option>
+                                        <option>盒</option>
+                                        <option>套</option>
+                                    </select>
+
+                                    <label for="selectGoodsCate" class="goods_info_label">商品类别</label>
+                                    <select id="selectGoodsCate" style="width: 150px; height: 40px;" class="form-control goods_left_info">
+                                        <option>商品类</option>
+                                        <option>服务类</option>
+                                        <option>套餐类</option>
+                                    </select>
+                                </div>
+
+                                <div class="goods-form-group" style="margin-top: 5px">
+                                    <label for="selectDeductWays" class="goods_info_label">提成方式</label>
+                                    <select id="selectDeductWays" style="width: 130px; height: 40px;" class="form-control goods_left_info">
+                                        <option>固定金额</option>
+                                        <option>提成比例</option>
+                                    </select>
+                                    <input type="text" name="deductValue" style="width: 270px; height: 40px;" class="form-control goods_left_info">
+                                </div>
+                                <div class="goods-form-group" style="margin-top: 5px">
+                                    <label for="goodsRemark" class="goods_info_label">备&nbsp;&nbsp;注</label>
+                                    <input type="text" name="goodsRemark" id="goodsRemark" class="form-control goods_left_info">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                                </button>
+                                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal">
+                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane employee-management" id="tab3" style="display: none">
+                <h4 class="title">员工管理</h4>
+                <div class="operation_button">
+                    <div class="add_button mg_left"><button type="button" class="btn btn-primary">+ 新&nbsp;增</button></div>
+                    <div class="delete_button mg_left"><button type="button" class="btn btn-primary">× 删&nbsp;除</button></div>
+                    <div class="update_button mg_left"><button type="button" class="btn btn-primary">◆ 修&nbsp;改</button></div>
+                </div>
+                <div class="employee_table">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>序&nbsp;&nbsp;号</th>
+                            <th>员工工号</th>
+                            <th>姓&nbsp;&nbsp;名</th>
+                            <th>性&nbsp;&nbsp;别</th>
+                            <th>年&nbsp;&nbsp;龄</th>
+                            <th>职&nbsp;&nbsp;位</th>
+                            <th>身份证</th>
+                            <th>联系方式</th>
+                            <th>是否在职</th>
+                            <th>备&nbsp;&nbsp;注</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style="text-align: left">1</td>
+                            <td>yg1001</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>yg1002</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>yg1003</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>yg1004</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>yg1005</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>yg1006</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>yg1007</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>yg1007</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>yg1008</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>yg1009</td>
+                            <td>刘现栋</td>
+                            <td>男</td>
+                            <td>19941004</td>
+                            <td>店长</td>
+                            <td>2570520025825</td>
+                            <td>17758984254</td>
+                            <td>在职</td>
+                            <td>dhhd</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane consumer_mgr" id="tab4" style="display: none;">
+                <h4 class="title">消费管理</h4>
+                <div class="ms-left_info">
+                    <div class="order-info">
+                        <table class="table">
+                            <thead class="t_head">
+                                <tr>
+                                    <th>序号</th>
+                                    <th>名称</th>
+                                    <th>数量</th>
+                                    <th>单价</th>
+                                    <th>折扣</th>
+                                    <th>金额</th>
+                                </tr>
+                            </thead>
+                            <tbody class="order_list">
+                                <tr>
+                                    <td>1</td>
+                                    <td class="item_name">商品1</td>
+                                    <td class="item_num">1</td>
+                                    <td class="item_unit_price">30.00</td>
+                                    <td class="item_discount">80%</td>
+                                    <td class="item_total_price">24.00</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td class="item_name">商品2</td>
+                                    <td class="item_num">1</td>
+                                    <td class="item_unit_price">5.00</td>
+                                    <td class="item_discount">100%</td>
+                                    <td class="item_total_price">5.00</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>商品3</td>
+                                    <td>1</td>
+                                    <td>10.00</td>
+                                    <td>100%</td>
+                                    <td>10.00</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>商品4</td>
+                                    <td>1</td>
+                                    <td>25.00</td>
+                                    <td>100%</td>
+                                    <td>30.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="empty_hint"></div>
+                        <div class="order_settle">
+                            <table class="table">
+                                <tr>
+                                    <td>顾客：
+                                        <input type="text" name="consumer">
+                                    </td>
+                                    <td>员工：
+                                        <select id="employee">
+                                            <option>张三</option>
+                                            <option>李四</option>
+                                            <option>王五</option>
+                                            <option>赵谦</option>
+                                            <option>孙俪</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: hidden;">
+                                    <td>单号：<span class="order_no">20171225000081</span></td>
+                                    <td>时间：<span class="order_date">2017-12-25 19:40:31</span></td>
+                                </tr>
+                                <tr style="border-bottom: hidden;">
+                                    <td>已选数量：<span class="order_nums">4</span></td>
+                                    <td>合计金额：<span class="total_amt" style="color: red; font-size: 16px; font-weight: bolder">64</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="submit_btn" style="margin-top: 10px;">
+                        <button class="lg_button-left btn btn-primary lg_button" type="button">提交</button>
+                        <button class="mg_right btn btn-primary lg_button" type="button">清空</button>
+                    </div>
+                </div>
+                <div class="ms-middle">
+                    <div class="add_goods">
+                        <button type="button" class=" add_goods btn btn-primary btn-lg">十</button>
+                    </div>
+                    <div class="delete_goods">
+                        <button type="button" class="btn btn-primary btn-lg">一</button>
+                    </div>
+                </div>
+                <div class="ms-right">
+                    <h4 class="title goods_cate_title">商品类别</h4>
+                    <p style="line-height: 5px;">&nbsp;</p>
+                    <ul class="cates_tabs">
+                        <li class="current" style="list-style: none;"><a href="#category_1" class="btn btn-primary">类别1</a></li>
+                        <li style="list-style: none;"><a href="#category_2" class="btn btn-primary">类别2</a></li>
+                        <li style="list-style: none;"><a href="#category_3" class="btn btn-primary">类别3</a></li>
+                    </ul>
+                    <div id="category_1" class="tab_content">
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;" class="goodsName">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="category_2" class="tab_content">
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="category_3" class="tab_content">
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane report-forms" id="tab5" style="display: none;">
+                <h4 class="title">报表中心</h4>
+                <div class="report-panel">
+                    <div class="report-row">
+                        <div id="new_vip_number" class="bigger_button">当月新增会员数<br><span style="color: #255625">17</span>(人)</div>
+                        <div id="cur_month_vip_percent" class="bigger_button">本月消费会员比例<br><span style="color: #255625">67%</span></div>
+                    </div>
+                    <div class="report-row">
+                        <div id="half_year_notshow_vip" class="bigger_button">近半年未消费会员<br><span style="color: #255625">79</span>(人)</div>
+                        <div id="deduct_percent" class="bigger_button">员工提成比例<br><span style="color: #255625">40%</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane sys-setting" id="tab6" style="display: none;">
+                <h4 class="title">系统设置</h4>
+                <div class="set-left_info">
+                    <div class="sys_input_info">
+                        <div class="logo_setting">
+                            <img src="./images/logo.jpg" width="60px" height="60px">
+                        </div>
+                        <form class="sys-form-horizontal" role="form">
+                            <div class="sys-form-group">
+                                <label for="store_name" class="sys-control-label">成&nbsp;&nbsp;员</label>
+                                <div class="sys_input_frame">
+                                    <input type="text" class="form-control" id="store_name" placeholder="请输入店名">
+                                </div>
+                            </div>
+                            <div class="sys-form-group">
+                                <label for="store_address" class="sys-control-label">地&nbsp;&nbsp;址</label>
+                                <div class="sys_input_frame">
+                                    <input type="text" class="form-control" id="store_address" placeholder="请输入地址">
+                                </div>
+                            </div>
+                            <div class="sys-form-group">
+                                <label for="tel_number" class="sys-control-label">电&nbsp;&nbsp;话</label>
+                                <div class="sys_input_frame">
+                                    <input type="text" class="form-control" id="tel_number" placeholder="请输入电话号码">
+                                </div>
+                            </div>
+                            <div class="sys-form-group">
+                                <label for="master_tel" class="sys-control-label">店长手机</label>
+                                <div class="sys_input_frame">
+                                    <input type="text" class="form-control" id="master_tel" placeholder="">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="set-button">
+                        <button type="button" id="confirm" class="btn btn-primary">确认修改</button>
+                        <button type="button" id="cancel" class="btn btn-primary">取&nbsp;&nbsp;消</button>
+                    </div>
+                </div>
+                <div class="set-right_info">
+                    <div class="message_info">
+                        <p class="message_label">剩余点数</p>
+                        <div>
+                            <span class="rest_number" style="font-size: 32px; font-weight: bold;line-height: 25px;">7800</span>点
+                        </div>
+                    </div>
+                    <div class="message_info">
+                        <p class="message_label">本月消费</p>
+                        <div><span class="cur_month_consumption">3500</span>点</div>
+                    </div>
+                    <div class="message_info">
+                        <p class="message_label">已发短信</p>
+                        <div><span class="sent_number">350</span>点</div>
+                    </div>
+                    <div class="message_view_button">
+                        <button type="button" class="btn btn-primary cur_month_detail">本月明细</button>
+                        <button type="button" class="btn btn-primary recent_3m_detail">最近三个月明细</button>
+                        <button type="button" class="btn btn-primary recharge">充值</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer"></div>
+</div>
+</body>
+</html>
