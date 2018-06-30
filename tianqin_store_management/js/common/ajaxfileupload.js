@@ -98,7 +98,7 @@ jQuery.extend({
                 }
             }catch(e)
             {
-                jQuery.handleError(s, xml, null, e);
+                //jQuery.handleError(s, xml, null, e);
             }
             if ( xml || isTimeout == "timeout")
             {

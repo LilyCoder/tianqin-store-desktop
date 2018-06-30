@@ -1,80 +1,103 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>防止table变形 td固定宽度</title>
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/font-awesome.min.css" rel="stylesheet">
+    <link href="./css/toastr.min.css" rel="stylesheet">
     <script src="./js/common/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="./js/common/jquery.validate.min.js" ></script>
+    <script src="jquery.pagination.js"></script>
     <script src="./js/common/bootstrap.min.js"></script>
-    <script src="./js/common/ajaxfileupload.js"></script>
-    <script>
-        $(function() {
-            //头像预览
-            $("#upload").click(function () {
-//                $("#upload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
-                $("#upload").on("change",function(){
-                    var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
-                    if (objUrl) {
-                        //$("#headPic").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
-                        alert(objUrl);
-                    }
-                });
-            });
-
-            //图片上传
-            $("#submit_btn").click(function () {
-
-                var imgurl = document.getElementById("upload").value;
-
-                $.ajaxFileUpload({
-                    url:"uploadHeadPic",
-                    fileElementId: "upload", //文件上传域的ID，这里是input的ID，而不是img的
-                    dataType: 'json', //返回值类型 一般设置为json
-                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                    success: function (data) {
-                        alert(data.code+" "+ data.msg);
-                        if (data.code==200){
-
-                            $("#headPic").attr("src","/market/images/image.png");
-                            //将图片换成默认的+图片
-                        }
-                    }
-
-                });
-
-
-            });
-
-        });
-
-        //建立一個可存取到該file的url
-        function getObjectURL(file) {
-            var url = null ;
-            if (window.createObjectURL!=undefined) { // basic
-                url = window.createObjectURL(file) ;
-            } else if (window.URL!=undefined) { // mozilla(firefox)
-                url = window.URL.createObjectURL(file) ;
-            } else if (window.webkitURL!=undefined) { // webkit or chrome
-                url = window.webkitURL.createObjectURL(file) ;
-            }
-            return url ;
+    <script src="./js/common/echarts.min.js"></script>
+    <script src="./layer/layer.js"></script>
+    <style type="text/css">
+        table {
+            /*为表格设置合并边框模型*/
+            border-collapse: collapse;
+            /*列宽由表格宽度和列宽度设定*/
+            table-layout: fixed;
+            width: 288px;
         }
+
+        td {
+            border: 1px solid #ddd;
+            /*允许在单词内换行。*/
+            /*word-break: nowrap;*/
+            /*设置宽度*/
+            width: 100px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        #triangle-right {
+            position: absolute;
+            top: 40%;
+            left: 17%;
+            width: 50px;
+            height: 50px;
+            border-top: 50px solid transparent;
+            border-left: 50px solid #b3ecff;
+            border-bottom: 50px solid transparent;
+            border-radius: 6px;
+            z-index: 2;
+            opacity: 1;
+        }
+
+        #triangle-left {
+            position: absolute;
+            top: 40%;
+            left: 0%;
+            width: 50px;
+            height: 50px;
+            width: 0;
+            height: 0;
+            border-top: 50px solid transparent;
+            border-right: 50px solid #b3ecff;
+            border-bottom: 50px solid transparent;
+            border-radius: 8px;
+            z-index: 2;
+            opacity: 1;
+        }
+
+        #triangle-down {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-top: 100px solid red;
+        }
+
+    </style>
+    <script>
+//        layer.confirm('您是如何看待前端开发？', {
+//            btn: ['取消','确定'],//按钮
+//            skin: "",
+//            area:["345px", "600px"]
+//        }, function(){
+//            layer.msg('的确很重要', {icon: 1});
+//        }, function(){
+//            layer.msg('也可以这样', {
+//                time: 20000, //20s后自动关闭
+//                btn: ['明白了', '知道了']
+//            });
+//        });
     </script>
 </head>
-<body>
-<!--<div class="container">-->
-    <!--<div class="jumbotron">-->
-        <!--<h1>欢迎登陆页面！</h1>-->
-    <!--</div>-->
-<!--</div>-->
 
-<div >
-    <!--<label >点击图片即可修改</label><br>-->
-    <!--<img id="headPic" src="/market/images/image.png"  width="100px" height="100px" style="padding: 5px">-->
-    <input id="upload" name="file" accept="image/*" type="file" style="display: block"/>
-    <button id="submit_btn" type="submit">确定修改</button>
+<body>
+<div>
+    <select>
+        <option data-cateid="1">2222</option>
+        <option data-cateid="2">22dddd22</option>
+        <option data-cateid="3">4353535</option>
+    </select>
 </div>
 
-
 </body>
+
 </html>
+

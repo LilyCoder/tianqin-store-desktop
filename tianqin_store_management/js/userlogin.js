@@ -34,7 +34,7 @@ $(function() {
             var userName = $('input[name="username"]').val();
             var password = $('input[name="password"]').val();
             $.ajax({
-                url : "http://192.168.43.106:8080/stm/login?name=" + userName + "&pwd=" + password,
+                url : "http://localhost:8080/stm/login?name=" + userName + "&pwd=" + password,
                 type : "POST",
                 dataType : "json",
                 success : function(data) {
