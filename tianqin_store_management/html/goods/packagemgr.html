@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>套餐管理</title>
+    <link href="../../css/main.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/toastr.css" rel="stylesheet">
+    <link href="../../css/redmond/theme.css">
+    <link href="../../css/redmond/jquery-ui.min.css">
+    <script src="../../js/common/jquery-3.2.1.min.js"></script>
+    <script src="../../layer/layer.js"></script>
+    <script src="../../js/common/jquery.validate.min.js"></script>
+    <script src="../../js/common/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../../js/common/jquery.validate.min.js" ></script>
+    <script src="../../js/common/bootstrap.min.js"></script>
+    <script src="../../js/common/toastr.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/common/component.js"></script>
+    <script src="../../js/common/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#addGoodsDialog").draggable();//为模态对话框添加拖拽
+            $("#addGoodsModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+        });
+    </script>
+    <style>
+        body{
+            margin-left: -30px;
+        }
+        #con_sets_name{
+            width: 170px;
+            height: 34px;
+            float: left;
+            border-radius: 4px;
+        }
+        .packgagemgr .operation_button{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            height: 34px;
+        }
+        .packgagemgr .query_opera{
+            width: 350px;
+        }
+        #new_package_submit{
+            margin-right: 200px;
+        }
+        /*.packgagemgr .modal-backdrop {*/
+            /*filter: alpha(opacity=0) !important;*/
+            /*opacity: 0!important;*/
+        /*}*/
+        .packgagemgr .goods-form-group{
+            width: 530px;
+            height: 40px;
+            margin-top: 8px;
+            margin-left: 15px;
+        }
+        .packgagemgr .left_goods_name,
+        .packgagemgr .goods_left_remark{
+            width: 160px;
+            float: left;
+        }
+
+        .packgagemgr .goods_info_label{
+            width: 70px;
+            height: 35px;
+            text-align: right;
+            line-height: 35px;
+            margin-right: 10px;
+        }
+
+        .packgagemgr .goods_left_info {
+            float: left;
+            width: 87px;
+            height: 35px;
+        }
+
+        .packgagemgr .my-footer{
+            padding-top: 5px !important;
+            margin-top: 0px;
+            border-top: none !important;
+        }
+
+        .my-modal-body::-webkit-scrollbar {
+            width: 14px;
+            background-color:transparent;
+            border-radius: 2px;
+        }
+        .my-modal-body::-webkit-scrollbar-button{
+
+        }
+        .my-modal-body::-webkit-scrollbar-thumb{
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #337ab7;
+        }
+        .packgagemgr button.row_delete,
+        .packgagemgr button.row_update{
+            padding: 4px 8px;
+            width: 30px;
+        }
+
+        .packgagemgr .incr_num_btn,
+        .packgagemgr .decr_num_btn,
+        .packgagemgr .remove_btn{
+            width: 30px;
+            cursor: hand;
+        }
+
+        .packgagemgr .pkg_rowOper{
+            font-size: 18px !important;
+        }
+    </style>
+</head>
+<body class="packgagemgr">
+    <div class="operation_button">
+        <div class="query_opera">
+            <div style="float: left">
+                <label for="con_sets_name" class="condition_label" style="width: 60px;font-weight: bolder;">套餐名称</label>
+                <input type="text" class="con_select form-control" id="con_sets_name" placeholder="请输入套餐名称">
+            </div>
+            <div class="search_button mg_left">
+                <button type="button" class="btn btn-primary">查&nbsp;询</button>
+            </div>
+        </div>
+        <div class="add_button mg_left" style="margin-left: 30px;">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPackageModal">+新&nbsp;增</button>
+        </div>
+    </div>
+    <div class="package_table">
+        <table class="table table-bordered">
+            <thead>
+            <tr style="background-color: #6699cc;">
+                <th>序&nbsp;号</th>
+                <th>套餐名称</th>
+                <th>店铺名称</th>
+                <th>价&nbsp;格</th>
+                <th>状&nbsp;态</th>
+                <th>折&nbsp;扣</th>
+                <th>提成方式</th>
+                <th>提成金额</th>
+                <th>提成比例</th>
+                <th>备&nbsp;注</th>
+                <th>商品详情</th>
+                <th style="text-align: center;width: 50px">操&nbsp;&nbsp;作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="pkgId">1</td>
+                    <td class="pkgName">肯德基套餐</td>
+                    <td class="pkgStoreName" data-storeid="0001">亚里士多德店铺</td>
+                    <td class="pkgPrice">34.5</td>
+                    <td class="pkgStatus" data-statusid="1">正常</td>
+                    <td class="promRate">88%</td>
+                    <td class="cmsiMethod">固定金额</td>
+                    <td class="cmsiMoney">45.5</td>
+                    <td class="cmsiRate">50%</td>
+                    <td class="pkgRemark">测试数据</td>
+                    <td class="pkgGoodsDetail">
+                        <a href="" class="view-btn">查看</a>
+                    </td>
+                    <td class='rowOper'>
+                        <button type='button' class='btn btn-default row_delete' style='padding: 4px 8px;'>
+                            <span class="glyphicon glyphicon-trash" style="color: rgb(255, 58, 0);"></span>
+                        </button>
+                        <button type='button' class='btn btn-default row_update' style='padding: 4px 8px;'>
+                            <span class="glyphicon glyphicon-edit" style="color: rgb(255, 80, 225);"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="pkg_loading" class="loading" style="display: none"></div>
+    <div class="modal fade" id="addPackageModal" tabindex="-1" role="dialog"
+         aria-labelledby="addPackageLabel" aria-hidden="true">
+        <div id="addGoodsDialog" class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #5bc0de">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="addGoodsModalLabel" style="text-align: center">
+                        <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);">新增套餐</span>
+                    </h4>
+                </div>
+                <div class="modal-body my-modal-body" style="height: 350px; overflow: auto">
+                    <div class="goods-form-group">
+                        <form id="packageImageUpload" enctype="multipart/form-data">
+                            <label class="goods_info_label">图片上传</label>
+                            <input name="packageImgFile" type="file" id="packageImgFile"
+                                   accept="image/*" class="form-control" multiple/>
+                            <input id="packageImg_submit_btn" class="btn btn-primary" type="button" value="确定上传">
+                        </form>
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="packageName" class="goods_info_label">套餐名称</label>
+                        <input type="text" name="packageName" required="required" id="packageName" class="form-control left_goods_name">
+                        <label for="pkgRemark" class="goods_info_label">备&nbsp;&nbsp;注</label>
+                        <input type="text" name="pkgRemark" id="pkgRemark" class="form-control goods_left_remark">
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="pkgUnitPrice" class="goods_info_label">单&nbsp;&nbsp;价</label>
+                        <input type="text" name="pkgUnitPrice" required="required" id="pkgUnitPrice" class="form-control goods_left_info">
+                        <label for="pkgSelDeductWays" class="goods_info_label" style="margin-left:10px; width: 35px; line-height: 17px;">提成方式</label>
+                        <select id="pkgSelDeductWays" style="width: 110px; height: 35px;" class="form-control goods_left_info">
+                            <option>固定金额</option>
+                            <option>提成比例</option>
+                        </select>
+                        <input type="text" name="deductRateValue" required="required" style="width: 148px; height: 35px;" class="form-control goods_left_info">
+                        <input type="text" name="deductMoneyValue" required="required" style="width: 148px; height: 35px;display: none;" class="form-control goods_left_info">
+                    </div>
+                    <div class="goods-form-group" style="height: 240px;">
+                        <label class="goods_info_label">套餐内商品</label>
+                        <button type="button" id="addPkgGoods" class="btn btn-primary">
+                            添加商品
+                        </button>
+                        <div class="pkgGoodsList">
+                            <table class="table table-bordered" style="border-color: powderblue; table-layout:fixed; width: 508px;">
+                                <thead>
+                                <tr>
+                                    <th style="text-align: left">商品编号</th>
+                                    <th style="text-align: left">商品名称</th>
+                                    <th style="text-align: left">商品数量</th>
+                                    <th style="text-align: left">操&nbsp;&nbsp;作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>001</td>
+                                    <td>黄叶菜</td>
+                                    <td>1</td>
+                                    <td class="pkg_rowOper">
+                                        <a class="incr_num_btn"><span class="glyphicon glyphicon-plus-sign" style="color: rgb(97, 104, 187);"></span></a>
+                                        <a class="decr_num_btn"><span class="glyphicon glyphicon-minus-sign" style="color: rgb(97, 104, 187);"></span></a>
+                                        <a class="remove_btn"><span class="glyphicon glyphicon-trash" style="color: rgb(97, 104, 187);"></span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>002</td>
+                                    <td>黄叶菜</td>
+                                    <td>1</td>
+                                    <td class="pkg_rowOper">
+                                        <a class="incr_num_btn"><span class="glyphicon glyphicon-plus-sign" style="color: rgb(97, 104, 187);"></span></a>
+                                        <a class="decr_num_btn"><span class="glyphicon glyphicon-minus-sign" style="color: rgb(97, 104, 187);"></span></a>
+                                        <a class="remove_btn"><span class="glyphicon glyphicon-trash" style="color: rgb(97, 104, 187);"></span></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer my-footer">
+                    <button type="button" class="btn btn-default cancel_submit" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>取&nbsp;消
+                    </button>
+                    <button type="button" class="btn btn-primary" id="new_package_submit">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确&nbsp;定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade pkg_goods_detail" id="all_goods_detail" tabindex="-1" role="dialog"
+         aria-labelledby="addPackageLabel" aria-hidden="true">
+        <div id="goodsDetailDialog" class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #5bc0de">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="addPackageLabel" style="text-align: center">
+                        <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);">商品列表</span>
+                    </h4>
+                </div>
+                <div class="modal-body" style="height: 350px; overflow: auto">
+                    <ul class="goods_list_right_tab">
+                        <li>
+                            <a href="#pkg_goodscate_1" data-toggle="tab" aria-checked="true" class="btn btn-primary">类别1</a>
+                        </li>
+                        <li>
+                            <a href="#pkg_goodscate_2" data-toggle="tab" aria-checked="false" class="btn btn-primary">类别2</a>
+                        </li>
+                        <li>
+                            <a href="#pkg_goodscate_3" data-toggle="tab" aria-checked="false" class="btn btn-primary">类别3</a>
+                        </li>
+                    </ul>
+                    <div id="pkg_goodscate_1" class="pkggoods_tab_content" >
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;" class="cmdyName">商品1</h6>
+                                <p style="line-height: 10px;" class="cmdyNo">sp1001 </p>
+                                <p style="line-height: 10px;" class="cmdyUprice">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;" class="cmdyName">商品1</h6>
+                                <p style="line-height: 10px;" class="cmdyNo">sp1001 </p>
+                                <p style="line-height: 10px;" class="cmdyUprice">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;" class="cmdyName">商品1</h6>
+                                <p style="line-height: 10px;" class="cmdyNo">sp1001 </p>
+                                <p style="line-height: 10px;" class="cmdyUprice">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;" class="cmdyName">商品1</h6>
+                                <p style="line-height: 10px;" class="cmdyNo">sp1001 </p>
+                                <p style="line-height: 10px;" class="cmdyUprice">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="pkg_goodscate_2" class="pkggoods_tab_content ms_hidden">
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="pkg_goodscate_3" class="pkggoods_tab_content ms_hidden">
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                        <div class="category_row">
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                            <div class="goods_desc">
+                                <h6 style="line-height: 10px;">商品1</h6>
+                                <p style="line-height: 10px;" class="goods_no">sp1001 </p>
+                                <p style="line-height: 10px;" class="goods_price">￥30.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../js/goods/pkgmanagement.js"></script>
+</html>

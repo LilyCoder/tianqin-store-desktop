@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>类别维护</title>
+    <link href="../../css/main.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/toastr.css" rel="stylesheet">
+    <link href="../../css/redmond/theme.css">
+    <link href="../../css/redmond/jquery-ui.min.css">
+    <script src="../../js/common.js"></script>
+    <script src="../../layer/layer.js"></script>
+    <script src="../../js/common/jquery-3.2.1.min.js"></script>
+    <script src="../../js/common/jquery.validate.min.js"></script>
+    <script src="../../js/common/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../../js/common/jquery.validate.min.js" ></script>
+    <script src="../../js/common/bootstrap.min.js"></script>
+    <script src="../../js/common/echarts.min.js"></script>
+    <script src="../../js/common/toastr.min.js"></script>
+    <script src="../../js/common/component.js"></script>
+    <script src="../../js/common/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#addCateDialog").draggable();//为模态对话框添加拖拽
+            $("#add_new_cate").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+        });
+    </script>
+    <style>
+        body.goodscate_mgr{
+            margin-left: -30px;
+        }
+        #con_goodscate_name{
+            width: 200px;
+            float: left;
+        }
+        .goodscate_mgr .query_opera{
+            width: 350px;
+        }
+        .goodscate_mgr .my-modal-body .cate_info_label{
+            float: left;
+            width: 80px;
+            height: 34px;
+            line-height: 34px;
+            margin-right: 5px;
+            text-align: right;
+        }
+        .goodscate_mgr .my-modal-body .left_cate_name{
+            width: 400px;
+            float: left;
+        }
+    </style>
+</head>
+<body class="goodscate_mgr">
+    <div class="operation_button">
+        <div class="query_opera">
+            <div style="float: left">
+                <label for="con_goodscate_name" class="condition_label" style="width: 60px;font-weight: bolder;">类别名称</label>
+                <input type="text" class="con_select form-control"
+                       name="con_goodscate_name" id="con_goodscate_name" placeholder="请输入类别名称">
+            </div>
+            <div class="search_button mg_left"><button type="button" class="btn btn-primary">查&nbsp;询</button></div>
+        </div>
+        <div class="add_button mg_left">
+            <button type="button" data-toggle="modal" data-target="#add_new_cate" class="btn btn-primary">+新&nbsp;增</button>
+        </div>
+    </div>
+    <div class="goods_category_table">
+        <table class="table table-bordered">
+            <thead>
+            <tr style="background-color: #6699cc;">
+                <th>序&nbsp;号</th>
+                <th>类别名称</th>
+                <th>类别状态</th>
+                <th>店铺编号</th>
+                <th>店铺名称</th>
+                <th>备&nbsp;注</th>
+                <th style="width: 60px">操&nbsp;&nbsp;作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="cate_seq">001</td>
+                    <td class="cate_name">商品类</td>
+                    <td class="cate_status">-</td>
+                    <td class="store_no">1010</td>
+                    <td class="store_name">宝莱坞</td>
+                    <th class="cate_mark">--</th>
+                    <td class="rowOper">
+                        <button type='button' class='btn btn-default row_delete'>
+                            <span class="glyphicon glyphicon-trash" style="color: rgb(255, 58, 0);"></span>
+                        </button>
+                        <button type='button' class='btn btn-default row_update'
+                                data-toggle="modal" data-target="#add_new_cate">
+                            <span class="glyphicon glyphicon-edit" style="color: rgb(255, 80, 225);"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="add_new_cate" tabindex="-1" role="dialog"
+         aria-labelledby="addCateModalLabel" aria-hidden="true">
+        <div id="addCateDialog" class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #5bc0de">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="addCateModalLabel" style="text-align: center">
+                        <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);">新增类别</span>
+                    </h4>
+                </div>
+                <div class="modal-body my-modal-body">
+                    <div class="goods-form-group">
+                        <label for="categoryName" class="cate_info_label">类别名称</label>
+                        <input type="text" name="categoryName" required="required" id="categoryName" class="form-control left_cate_name">
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="cateStoreName" class="cate_info_label">店铺名称</label>
+                        <input type="text" name="cateStoreName" required="required" id="cateStoreName" class="form-control left_cate_name">
+                    </div>
+                </div>
+                <div class="modal-footer my-footer">
+                    <button type="button" class="btn btn-default cancel_submit" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>取&nbsp;消
+                    </button>
+                    <button type="button" class="btn btn-primary" id="new_category_submit">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确&nbsp;定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../js/goods/categorymgr.js"></script>
+</html>

@@ -12,6 +12,7 @@
     <script src="jquery.pagination.js"></script>
     <script src="./js/common/bootstrap.min.js"></script>
     <script src="./js/common/echarts.min.js"></script>
+    <script src="./js/password.js"></script>
     <script src="./layer/layer.js"></script>
     <style type="text/css">
         table {
@@ -70,7 +71,46 @@
             border-right: 50px solid transparent;
             border-top: 100px solid red;
         }
+        body{
+            font-family: Arial;
+        }
+        .changepwd-card{
+            position: fixed;
+            top: 40%;
+            left: 30%;
+            background-color: #24a5dd;
+        }
+        .card-header {
+            text-align: center;
+            font-weight: bolder;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .card-form-item {
+            height: 40px;
+            margin-top: 20px;
+        }
+        .card-form-label{
+            width: 20%;
+            float: left;
+            text-align: right;
+            font-size: 15px;
+            font-weight: normal;
+            margin-right: 15px;
+            line-height: 30px;
+        }
+        .card-input-inline{
+            width: 60%;
+            float: left;
+            height: auto;
+            font-size: 14px;
+            font-weight: normal;
+        }
 
+        .confirm-btn{
+            margin-left: 40%;
+        }
     </style>
     <script>
 //        layer.confirm('您是如何看待前端开发？', {
@@ -85,17 +125,51 @@
 //                btn: ['明白了', '知道了']
 //            });
 //        });
+
+        $(document).ready(function(){
+            layer.open({
+                content: '测试回调',
+                yes: function(index, layero){
+                    //do something
+                    layer.close(index); //如果设定了yes回调，需进行手工关闭
+                }
+            });
+        });
+
     </script>
 </head>
 
 <body>
-<div>
-    <select>
-        <option data-cateid="1">2222</option>
-        <option data-cateid="2">22dddd22</option>
-        <option data-cateid="3">4353535</option>
-    </select>
-</div>
+<!--<div class="changepwd-card" style="display: none">-->
+    <!--<div class="card-header">修改密码</div>-->
+    <!--<div class="card-body">-->
+        <!--<div class="card-form">-->
+            <!--<div class="card-form-item">-->
+                <!--<label class="card-form-label">当前密码 </label>-->
+                <!--<div class="card-input-inline">-->
+                    <!--<input name="oldPassword" class="card-layui-input form-control" type="password">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="card-form-item">-->
+                <!--<label class="card-form-label">新密码 </label>-->
+                <!--<div class="card-input-inline">-->
+                    <!--<input name="password" id="LAY_password" class="card-layui-input form-control" type="password">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="card-form-item">-->
+                <!--<label class="card-form-label">确认新密码 </label>-->
+                <!--<div class="card-input-inline">-->
+                    <!--<input name="repassword" class="card-layui-input form-control" type="password">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="card-form-item">-->
+                <!--<div class="card-input-block">-->
+                    <!--<button class="btn btn-primary confirm-btn">确认修改</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 
 </body>
 

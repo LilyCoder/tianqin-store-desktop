@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>员工管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../../css/main.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/toastr.css" rel="stylesheet">
+    <link href="../../css/redmond/theme.css">
+    <link href="../../css/redmond/jquery-ui.min.css">
+    <script src="../../js/common.js"></script>
+    <script src="../../js/common/jquery-3.2.1.min.js"></script>
+    <script src="../../js/common/jquery.validate.min.js"></script>
+    <script src="../../js/common/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../../js/common/jquery.validate.min.js" ></script>
+    <script src="../../js/common/bootstrap.min.js"></script>
+    <script src="../../js/common/echarts.min.js"></script>
+    <script src="../../js/common/toastr.min.js"></script>
+    <script src="../../js/common/component.js"></script>
+    <script src="../../js/common/jquery-ui.min.js"></script>
+    <style>
+        body{
+            margin-left: -30px;
+        }
+        .employ_mgr .operation_button{
+            /*margin-top: 10px;*/
+            margin-bottom: 10px;
+            height: 34px;
+        }
+        .employ_mgr .staff_condition_label{
+            float: left;
+            height: 34px;
+            width: 40px;
+            text-align: right;
+            margin-right: 5px;
+            line-height: 18px;
+        }
+        .employ_mgr .query_opera .con_select{
+            width: 80px;
+            height: 34px;
+            float: left;
+            border-radius: 4px;
+        }
+        .employ_mgr .row_update,
+        .employ_mgr .row_delete{
+            width: 30px;
+            padding: 3px 8px;
+        }
+        .employ_mgr .staff-form-group{
+            width: 500px;
+            height: 40px;
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .employ_mgr .staff_info_label{
+            width: 70px;
+            height: 35px;
+            line-height: 35px;
+            text-align: right;
+            margin-right: 5px;
+        }
+        .employ_mgr .staff_left_info{
+            width: 160px;
+            height: 35px;
+        }
+        #staff_btn_submit{
+            margin-right: 200px;
+        }
+        .employ_mgr .employee_table {
+            height: 350px;
+        }
+    </style>
+</head>
+<body class="employ_mgr">
+    <div class="operation_button">
+        <div class="query_opera">
+            <div style="float: left">
+                <label for="con_staff_name" class="condition_label">姓名</label>
+                <input type="text" class="form-control con-left-info" name="con_staff_name"
+                       id="con_staff_name" placeholder="员工姓名">
+            </div>
+            <div style="float: left">
+                <label class="condition_label">职位</label>
+                <select id="con_staff_pos" class="con_select form-control">
+                    <option data-posid="0">全部</option>
+                    <option data-posid="1">股东</option>
+                    <option data-posid="2">区域经理</option>
+                    <option data-posid="3">财务</option>
+                    <option data-posid="4">店长</option>
+                    <option data-posid="5">员工</option>
+                    <option data-posid="6">管理员</option>
+                </select>
+            </div>
+            <div style="float: left">
+                <label class="staff_condition_label">员工状态</label>
+                <select id="con_staff_onjob" class="con_select form-control">
+                    <option data-stat="1">在职</option>
+                    <option data-stat="2">休假</option>
+                    <option data-stat="3">离职</option>
+                </select>
+            </div>
+            <div class="search_button mg_left">
+                <button type="button" class="btn btn-primary">查&nbsp;&nbsp;询</button>
+            </div>
+        </div>
+        <div class="add_button mg_left">
+            <button type="button" class="btn btn-primary" data-target="#add_newstaff_modal" data-toggle="modal">+ 新&nbsp;增</button>
+        </div>
+    </div>
+    <div class="employee_table">
+        <table class="table table-bordered">
+            <thead>
+                <tr style="background-color: #6699cc;">
+                    <th>编&nbsp;&nbsp;号</th>
+                    <th>姓&nbsp;&nbsp;名</th>
+                    <th>性&nbsp;&nbsp;别</th>
+                    <th>生&nbsp;&nbsp;日</th>
+                    <th>职&nbsp;&nbsp;位</th>
+                    <th>账&nbsp;&nbsp;号</th>
+                    <th>密&nbsp;&nbsp;码</th>
+                    <th>身 份 证</th>
+                    <th>联系方式</th>
+                    <th>是否在职</th>
+                    <th>备&nbsp;&nbsp;注</th>
+                    <th style="text-align: center;width: 50px">操&nbsp;&nbsp;作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr class="staff_row">
+                <td class="staffNo" style="text-align: left">001</td>
+                <td class="staffName">刘现栋</td>
+                <td class="staffSex">男</td>
+                <td class="staffAge">19941004</td>
+                <td class="staffPos">店长</td>
+                <td class="accountNo">liuliu</td>
+                <td class="password">666666</td>
+                <td class="staffId">2570520025825</td>
+                <td class="staffTel">17758984254</td>
+                <td class="staffOnJob">在职</td>
+                <td class="staffMark">dhhd</td>
+                <td class="rowOper">
+                    <button type="button" class="btn btn-default row_delete">
+                        <span class="glyphicon glyphicon-trash" style="color: rgb(0, 187, 223);"></span>
+                    </button>
+                    <button type="button" class="btn btn-default row_update" data-target="#add_newstaff_modal" data-toggle="modal">
+                        <span class="glyphicon glyphicon-edit" style="color: rgb(0, 187, 223);"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr class="staff_row">
+                <td class="staffNo" style="text-align: left">002</td>
+                <td class="staffName">刘现栋</td>
+                <td class="staffSex">男</td>
+                <td class="staffAge">19941004</td>
+                <td class="staffPos">店长</td>
+                <td class="accountNo">liuliu</td>
+                <td class="password">666666</td>
+                <td class="staffId">2570520025825</td>
+                <td class="staffTel">17758984254</td>
+                <td class="staffOnJob">在职</td>
+                <td class="staffMark">dhhd</td>
+                <td class="rowOper">
+                    <button type="button" class="btn btn-default row_delete">
+                        <span class="glyphicon glyphicon-trash" style="color: rgb(0, 187, 223);"></span>
+                    </button>
+                    <button type="button" class="btn btn-default row_update" data-target="#add_newstaff_modal" data-toggle="modal">
+                        <span class="glyphicon glyphicon-edit" style="color: rgb(0, 187, 223);"></span>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination_bar">
+        <div class="p_panel">
+            <div class="last_page">
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-backward" style="color: rgb(0, 2, 78);">上一页</span>
+                </button>
+            </div>
+            <div class="page_index">
+                <h4>第<span class="page_no">1</span>页</h4>
+            </div>
+            <div class="page_size">
+                <h4>每页
+                    <select name="rp" style="height: 24px;margin-top: -7px">
+                        <option value="25">8</option>
+                        <option value="30">16</option>
+                        <option value="40">24</option>
+                        <option value="50">30</option>
+                    </select>条</h4>
+            </div>
+            <div class="total">
+                <h4>总共<span class="page_number">23</span>页</h4>
+            </div>
+            <div class="next_page">
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-forward" style="color: rgb(0, 2, 78);">下一页</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="staff_loading" class="loading" style="display: none"></div>
+    <div class="modal fade" id="add_newstaff_modal" tabindex="-1"
+         role="dialog" aria-labelledby="newStaffModalLabel" aria-hidden="true">
+        <div id="addNewStaffDialog" class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #5bc0de">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="newStaffModalLabel" style="text-align: center">
+                        <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);">添加员工</span>
+                    </h4>
+                </div>
+                <div class="modal-body my-modal-body">
+                    <div class="staff-form-group">
+                        <label for="staffName" class="staff_info_label">姓&nbsp;&nbsp;名</label>
+                        <input type="text" name="staffName" required="required" id="staffName" class="form-control staff_left_info">
+                        <label for="staffSex" class="staff_info_label" style="margin-left: 30px;">性&nbsp;&nbsp;别</label>
+                        <select id="staffSex" class="form-control staff_left_info">
+                            <option>男</option>
+                            <option>女</option>
+                        </select>
+                    </div>
+                    <div class="staff-form-group">
+                        <label for="datepicker" class="staff_info_label">出生日期</label>
+                        <input type="text" name="staffBirthday" required="required" id="datepicker" class="form-control staff_left_info">
+                        <label for="staffIdenty" class="staff_info_label" style="margin-left: 30px;">身份证</label>
+                        <input type="text" name="staffIdenty" id="staffIdenty" class="form-control staff_left_info">
+                    </div>
+                    <div class="staff-form-group">
+                        <label for="staffAccount" class="staff_info_label">账&nbsp;&nbsp;号</label>
+                        <input type="text" name="staffAccount" id="staffAccount" class="form-control staff_left_info">
+                        <label for="staffPassword" class="staff_info_label" style="margin-left: 30px;">密&nbsp;&nbsp;码</label>
+                        <input type="text" name="staffPassword" id="staffPassword" class="form-control staff_left_info">
+                    </div>
+                    <div class="staff-form-group">
+                        <label for="staffPos" class="staff_info_label">职&nbsp;位</label>
+                        <select id="staffPos" class="form-control staff_left_info">
+                            <option data-posid="1">股东</option>
+                            <option data-posid="2">区域经理</option>
+                            <option data-posid="3">财务</option>
+                            <option data-posid="4">店长</option>
+                            <option data-posid="5">员工</option>
+                            <option data-posid="6">管理员</option>
+                        </select>
+                        <label for="staffTel" class="staff_info_label" style="margin-left: 30px;">联系方式</label>
+                        <input type="text" name="staffTel" id="staffTel" class="form-control staff_left_info">
+                    </div>
+                    <div class="staff-form-group">
+                        <label for="staffObJob" class="staff_info_label">是否在职</label>
+                        <select id="staffObJob" class="form-control staff_left_info">
+                            <option data-stat="1">在职</option>
+                            <option data-stat="2">休假</option>
+                            <option data-stat="3">离职</option>
+                        </select>
+                        <!--<input type="text" name="staffObJob" id="staffObJob" class="form-control staff_left_info">-->
+                        <label for="staffMark" class="staff_info_label" style="margin-left: 30px;">备&nbsp;&nbsp;注</label>
+                        <input type="text" name="staffMark" id="staffMark" class="form-control staff_left_info">
+                    </div>
+                </div>
+                <div class="modal-footer my-footer">
+                    <button type="button" class="btn btn-default cancel_submit" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>取&nbsp;消
+                    </button>
+                    <button type="button" class="btn btn-primary" id="staff_btn_submit">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确&nbsp;定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../js/employee/employmanage.js"></script>
+</html>

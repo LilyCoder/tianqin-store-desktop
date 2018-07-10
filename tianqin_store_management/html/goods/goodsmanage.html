@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>商品管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../../css/main.css" rel="stylesheet">
+    <link href="../../css/goods/goodsmgr.css">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/toastr.css" rel="stylesheet">
+    <link href="../../css/redmond/theme.css">
+    <link href="../../css/redmond/jquery-ui.min.css">
+    <script src="../../js/common.js"></script>
+    <script src="../../js/common/jquery-3.2.1.min.js"></script>
+    <script src="../../js/common/jquery.validate.min.js"></script>
+    <script src="../../js/common/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../../js/common/jquery.validate.min.js" ></script>
+    <script src="../../js/common/bootstrap.min.js"></script>
+    <script src="../../js/common/echarts.min.js"></script>
+    <script src="../../js/common/toastr.min.js"></script>
+    <script src="../../js/common/component.js"></script>
+    <script src="../../js/common/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#addGoodsDialog").draggable();//为模态对话框添加拖拽
+            $("#addGoodsModal").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+        });
+    </script>
+    <style>
+        body{
+            margin-left: -30px;
+        }
+        .goodsmgr_body .condition_label{
+            float: left;
+            width: 40px;
+            height: 34px;
+            line-height: 34px;
+        }
+        .goodsmgr_body .operation_button{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            height: 34px;
+        }
+        .goodsmgr_body .goods_info_label{
+            float: left;
+            width: 70px;
+            height: 35px;
+            text-align: right;
+            line-height: 35px;
+            margin-right: 3px;
+        }
+        .goodsmgr_body .left_goods_name{
+            width: 400px;
+            float: left;
+        }
+        .goodsmgr_body .goods_left_info {
+            float: left;
+            width: 87px;
+            height: 35px;
+        }
+        .goodsmgr_body .goods_left_remark{
+            width: 400px;
+        }
+        .goodsmgr_body .modal-title{
+            text-align: center;
+        }
+        .goodsmgr_body .modal-backdrop {
+            filter: alpha(opacity=0) !important;
+            opacity: 0!important;
+        }
+        .goodsmgr_body .my-footer{
+            padding-top: 10px !important;
+            margin-top: 0px;
+        }
+        #con_goods_cate{
+            width: 100px;
+            height: 34px;
+            float: left;
+            border-radius: 4px;
+        }
+        #con_goods_name{
+            width: 170px;
+            height: 34px;
+            float: left;
+            border-radius: 4px;
+        }
+        #goods_btn_submit {
+            margin-right: 200px;
+        }
+        .goodsmgr_body button.row_delete,
+        .goodsmgr_body button.row_update{
+            padding: 4px 8px;
+            width: 30px;
+        }
+        .goodsmgr_body .goods_table{
+            height: 300px;
+            margin-bottom: 30px;
+        }
+        .goodsmgr_body .goods-form-group {
+            width: 530px;
+            height: 40px;
+            margin-top: 5px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body class="goodsmgr_body">
+    <div class="operation_button">
+        <div class="query_opera">
+            <div style="float: left">
+                <label for="con_goods_name" class="condition_label">名称</label>
+                <input type="text" class="form-control" name="con_goods_name"
+                       id="con_goods_name" placeholder="请输入商品名称">
+            </div>
+            <div style="margin-left: 5px; float: left">
+                <label class="condition_label">类别</label>
+                <select id="con_goods_cate">
+                </select>
+            </div>
+            <div class="search_button mg_left">
+                <button type="button" class="btn btn-primary">查&nbsp;询</button>
+            </div>
+        </div>
+        <div class="add_button mg_left">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addGoodsModal">+新&nbsp;增</button>
+        </div>
+    </div>
+    <div class="goods_table pre-scrollable">
+        <table class="table table-bordered">
+            <thead>
+                <tr style="background-color: #6699cc;">
+                    <th>序&nbsp;号</th>
+                    <th>店铺名称</th>
+                    <th>商品名称</th>
+                    <th>单&nbsp;价</th>
+                    <th>基础价</th>
+                    <th>单&nbsp;位</th>
+                    <th>折&nbsp;扣</th>
+                    <th>商品类别</th>
+                    <th>提成方式</th>
+                    <th>提成金额</th>
+                    <th>提成比例</th>
+                    <th>备&nbsp;注</th>
+                    <th style="width: 50px">操&nbsp;作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <td class='goodsNo'>001</td>
+            <td class='storeName'>宝莱坞</td>
+            <td style='width: 82px; height:37px; overflow: hidden;' class='goodsName'>男士洗发水-飘柔牌</td>
+            <td class='goodsUnitPrice'>34.56</td>
+            <td class='goodsCost'>34.00</td>
+            <td class='goodsUnit'>瓶</td>
+            <td class='goodsRate'>80%</td>
+            <td class='goodsCate'>商品类</td>
+            <td class='deductWays'>固定比例</td>
+            <td class='deductMoney'>-</td>
+            <td class='deductRate'>50%</td>
+            <td class='goodsMark'>去屑止痒</td>
+            <td class='rowOper'>
+                <button type='button' class='btn btn-default row_delete'>
+                    <span class="glyphicon glyphicon-trash" style="color: rgb(255, 58, 0);"></span>
+                </button>
+                <button type='button' class='btn btn-default row_update'
+                        data-toggle="modal" data-target="#addGoodsModal">
+                    <span class="glyphicon glyphicon-edit" style="color: rgb(255, 80, 225);"></span>
+                </button>
+            </td>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination_bar">
+        <div class="p_panel">
+            <div class="last_page">
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-backward" style="color: rgb(0, 2, 78);">上一页</span>
+                </button>
+            </div>
+            <div class="page_index">
+                <h4>第<span class="page_no">1</span>页</h4>
+            </div>
+            <div class="page_size">
+                <h4>每页
+                    <select name="rp" style="height: 24px;margin-top: -7px">
+                        <option value="25">5</option>
+                        <option value="30">10</option>
+                        <option value="40">15</option>
+                        <option value="50">20</option>
+                    </select>条</h4>
+            </div>
+            <div class="total">
+                <h4>总共<span class="page_number">23</span>页</h4>
+            </div>
+            <div class="next_page">
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-forward" style="color: rgb(0, 2, 78);">下一页</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="goods_loading" class="loading" style="display: none"></div>
+    <div class="modal fade" id="addGoodsModal" tabindex="-1" role="dialog" aria-labelledby="addGoodsModalLabel" aria-hidden="true">
+        <div id="addGoodsDialog" class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #5bc0de">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="addGoodsModalLabel">
+                        <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);">新增商品</span>
+                    </h4>
+                </div>
+                <div class="modal-body my-modal-body">
+                    <div class="goods-form-group">
+                        <form id="goodsImage" enctype="multipart/form-data">
+                            <label class="goods_info_label">图片上传</label>
+                            <input name="MultipartFile" type="file" id="uploadGoodsImage" accept="image/*" class="form-control" multiple/>
+                            <input id="img_submit_btn" class="btn btn-primary" type="button" value="确定上传">
+                        </form>
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="goodsName" class="goods_info_label">商品名称</label>
+                        <input type="text" name="goodsName" required="required" id="goodsName" class="form-control left_goods_name">
+                        <label for="ownStoreName" class="goods_info_label">所属店铺</label>
+                        <select id="ownStoreName" class="form-control left_goods_name"></select>
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="goodsUnitPrice" class="goods_info_label">单&nbsp;价</label>
+                        <input type="text" name="goodsUnitPrice" required="required" id="goodsUnitPrice" class="form-control goods_left_info">
+                        <label for="goodsCosts" class="goods_info_label" style="margin-right: 0px;text-align: center">成&nbsp;本</label>
+                        <input type="text" name="goodsCosts" required="required" id="goodsCosts" class="form-control goods_left_info">
+                        <label for="goodsRates" class="goods_info_label" style="margin-right: 0px;text-align: center">折扣率</label>
+                        <input type="text" name="goodsRates" id="goodsRates" class="form-control goods_left_info">
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="goodsUnitSlect" class="goods_info_label">单&nbsp;&nbsp;位</label>
+                        <select id="goodsUnitSlect" style="width: 165px; height: 35px;" name="goodsUnitSlect" class="form-control goods_left_info">
+                            <option>次</option>
+                            <option>盒</option>
+                            <option>套</option>
+                        </select>
+
+                        <label for="selectGoodsCate" class="goods_info_label" style="margin-right: 0px;text-align: center">商品类别</label>
+                        <select id="selectGoodsCate" style="width: 165px; height: 35px;" class="form-control goods_left_info">
+                        </select>
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="selectDeductWays" class="goods_info_label">提成方式</label>
+                        <select id="selectDeductWays" style="width: 150px; height: 35px;" class="form-control goods_left_info">
+                            <option>固定金额</option>
+                            <option>提成比例</option>
+                        </select>
+                        <input type="text" name="deductValue" required="required" style="width: 250px; height: 35px;" class="form-control goods_left_info">
+                    </div>
+                    <div class="goods-form-group">
+                        <label for="goodsRemark" class="goods_info_label">备&nbsp;&nbsp;注</label>
+                        <input type="text" name="goodsRemark" id="goodsRemark" class="form-control goods_left_remark">
+                    </div>
+                </div>
+                <div class="modal-footer my-footer">
+                    <button type="button" class="btn btn-default cancel_submit" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>取&nbsp;消
+                    </button>
+                    <button type="button" class="btn btn-primary" id="goods_btn_submit">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确&nbsp;定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../js/goods/goodsmgr.js"></script>
+</html>

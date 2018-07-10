@@ -1,8 +1,10 @@
 body{
+    position: fixed;
     font-size: 18px;
     font-style: normal;
     font-weight: bolder;
-    width: auto;
+    width: 100%;
+    height: 100%;
     padding: 20px 30px;
     margin-left: auto;
     margin-right: auto;
@@ -10,12 +12,31 @@ body{
     background-size:cover;
 }
 
+.loading{
+    width: 160px;
+    height: 56px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    line-height: 56px;
+    color: #fff;
+    padding-left: 60px;
+    font-size: 15px;
+    background: #000 url(../images/loding.gif) no-repeat 10px 50%;
+    opacity: 0.8;
+    z-index: 9999;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+}
+
 .mainContent {
     padding-bottom: 9px;
     border-bottom: 1px solid #1b6d85;
 }
 
-.logout-button {
+.logout-button,.changepwd-button,.logonRole {
     display: inline-block;
     margin: 10px;
 }
@@ -182,24 +203,10 @@ span{
 .employee-management .add_button>button{
     width: 80px;
 }
-.employee-management {
-    margin-left: 10px;
-}
-.operation_button {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    height: 30px;
-}
 
 .goods-management {
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     margin-top: 10px;
-}
-
-td.rowOper
-{
-    width: 110px;
-    text-align: center;
 }
 
 th {
@@ -213,7 +220,7 @@ td {
 
 }
 
-.active {
+li.active {
     position:relative;
     z-index:1;
     background:#fff;
@@ -640,12 +647,7 @@ img#headPic{
 .staff_left_info, .staff_info_label{
     float: left;
 }
-.goods-form-group {
-    width: 530px;
-    height: 40px;
-    margin-top: 10px;
-    margin-left: 20px;
-}
+
 
 /*.info_update .staff_info_label,*/
 .goodsinfo_update .goods_info_label,
@@ -711,13 +713,14 @@ input[name=MultipartFile]
 .operation_button .query_opera{
     width:500px;
     float:left;
-    margin-left: 10px;
 }
 .operation_button .query_opera .condition_label{
     width: 40px;
     height: 34px;
     float: left;
     line-height: 34px;
+    text-align: right;
+    margin-right: 5px;
 }
 
 .goods-management .goods_tabs_nav li{
@@ -731,7 +734,7 @@ input[name=MultipartFile]
     border: 1px solid #ffffff;
     cursor: pointer;
     border-radius: 6px;
-    width: 100px;
+    width: 120px;
     font-size: 20px;
     font-weight: bold;
     padding-top: 5px;
@@ -749,7 +752,6 @@ input[name=MultipartFile]
     background-color: #fff !important;
 }
 
-
 ul.goods_tabs_nav{
     padding-bottom: 0px;
 }
@@ -759,18 +761,8 @@ ul.goods_tabs_nav{
     float: left;
     border-radius: 4px;
 }
-.employee-management .query_opera .con_select{
-    width: 60px;
-    height: 34px;
-    float: left;
-    border-radius: 4px;
-}
-.employee-management .query_opera .staff_condition_label{
-    width: 80px;
-    height: 34px;
-    float: left;
-    line-height: 34px;
-}
+
+
 .employee-management .query_opera {
     width:600px;
     float:left;
@@ -781,7 +773,7 @@ tr.rowOper>button.row_update,
 tr.rowOper>button.row_delete
 {
     float: left;
-    margin-left: 20px;
+    /*margin-left: 20px;*/
 }
 /*tr.rowOper>button.row_delete{*/
     /*margin-left: 20px;*/
@@ -816,6 +808,13 @@ td>input[type='checkbox'] {
 .theme_package {
     top: 50%;
     left: 20%;
+}
+
+.theme-popover .paymentWays-content {
+    display: block;
+    width: 333px;
+    height: 240px;
+
 }
 
 .theme-popover .paymentWays-content {
@@ -1043,16 +1042,12 @@ td>input{
     overflow: scroll;
 }
 
-.all_goods_detail{
-    z-index: 100000;
-    position: fixed;
-    top: 50%;
-    left: 61%;
-    margin: -193px 0 0 -216px;
-    border-radius: 6px;
+#all_goods_detail .modal-content{
     background-color: #66b3ff;
-    width: 410px;
-    height: 510px;
+    width: 900px;
+    height: 600px;
+    margin-left: -120px;
+    overflow: auto;
 }
 
 ul.goods_list_right_tab {
@@ -1063,6 +1058,10 @@ ul.goods_list_right_tab {
 ul.goods_list_right_tab > li{
     float: left;
     list-style: none;
+}
+ul.goods_list_right_tab > li.active{
+    background-color: #ffffff !important;
+    color: #000000 !important;
 }
 ul.goods_list_right_tab > li >a{
     margin-bottom: 10px;
@@ -1082,10 +1081,10 @@ ul.goods_list_right_tab > li >a{
 }
 
 button#addPkgGoods {
-    border-radius: 16px;
+    border-radius: 12px;
     border: 2px solid #d0e5f5;
-    margin-left:10px;
     float: left;
+    height: 34px
 }
 button.goodslist_toggle{
     border-radius: 5px;
@@ -1160,4 +1159,95 @@ button.add_tab_item, button.delete_tab_item{
 
 div.order-info.activeTab{
     display: block;
+}
+
+.store_condition_label, .con_AMname_label{
+    float: left;
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 5px;
+}
+#con_storename{
+    width: 140px;
+    height: 30px;
+    float: left;
+    border-radius: 3px;
+}
+#con_am_name{
+    width: 80px;
+    height: 30px;
+    border-radius: 3px;
+}
+
+.store_management .query_opera {
+    width: 500px;
+}
+
+.view-btn, .row_update, .row_delete{
+    font-size: 14px !important;
+    font-weight: bolder;
+    text-align: center;
+    margin-left: 3px;
+    color: #000000;
+}
+a.view-btn:hover {
+    text-decoration: underline;
+}
+.modal-body .store-form-group{
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.modal-body .store_info_label{
+    float: left;
+    width: 15%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.modal-body .store_left_info{
+    float: left;
+    width: 60%;
+}
+
+#store_btn_submit {
+    margin-right: 200px;
+}
+
+.my-footer{
+    margin-top: 20px;
+    border: none;
+}
+.my-modal-body{
+    border: none;
+}
+
+.pagination_bar {
+    height: 40px;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.pagination_bar .p_panel {
+    margin-left: 250px;
+}
+
+.last_page, .total, .next_page,
+.page_index, .page_size{
+    float: left;
+    margin-left: 15px;
+}
+
+.last_page button, .next_page button {
+    height: 34px;
+}
+
+.pagination_bar .page_number{
+    font-weight: bold;
+    color: inherit;
 }

@@ -124,4 +124,4 @@
             initSysSettingMgr:initSysSettingMgr
         }
     }();
-})(jQuery)
+})(jQuery);

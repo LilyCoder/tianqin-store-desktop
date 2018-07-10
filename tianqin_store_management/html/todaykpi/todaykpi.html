@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>今日关键指标</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="../../css/main.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/toastr.css" rel="stylesheet">
+    <link href="../../css/redmond/theme.css">
+    <link href="../../css/redmond/jquery-ui.min.css">
+    <script src="../../js/common/jquery-3.2.1.min.js"></script>
+    <script src="../../js/common/jquery.validate.min.js"></script>
+    <script src="../../js/common/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../../js/common/jquery.validate.min.js" ></script>
+    <script src="../../js/common/bootstrap.min.js"></script>
+    <script src="../../js/common/echarts.min.js"></script>
+    <script src="../../js/common/toastr.min.js"></script>
+    <script src="../../js/common/jquery-ui.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/common/component.js"></script>
+    <script src="../../js/main.js"></script>
+</head>
+<body>
+    <div id="main-menu">
+        <div class="headerBar ms_page-header">
+            <div class="logoInfo" style="padding-left: 2%; display: inline-block">
+                <h2>
+                    <img id="logoImg" src="../../images/logo.jpg" width="65" height="65" style="border-radius: 60px">&nbsp;&nbsp;宝莱坞店</h2>
+            </div>
+            <div class="header_right">
+                <div class="logonRole">当前登录：<span style="font-weight: normal">张三(员工)</span></div>
+                <div class="aboutUs"><a href="#">关于我们</a></div>
+                <div class="logout-button">
+                    <button type="button" class="btn btn-primary" onclick="javascript:logout();">退出</button>
+                </div>
+                <div class="changepwd-button">
+                    <button type="button" class="btn btn-primary">修改密码</button>
+                </div>
+            </div>
+        </div>
+        <div class="mainContent">
+            <ul class="nav tabs-left">
+                <li><a class="dp-btn dp-btn-default no_hover active" href="./todaykpi.html" data-toggle='tab'>我&nbsp;的&nbsp;桌&nbsp;面</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab4' data-toggle='tab'>消&nbsp;费&nbsp;管&nbsp;理</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab7' data-toggle='tab'>订&nbsp;单&nbsp;管&nbsp;理</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab2' data-toggle='tab'>商&nbsp;品&nbsp;管&nbsp;理</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab3' data-toggle='tab'>员&nbsp;工&nbsp;管&nbsp;理</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab8' data-toggle='tab'>会&nbsp;员&nbsp;管&nbsp;理</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab5' data-toggle='tab'>报&nbsp;表&nbsp;中&nbsp;心</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab6' data-toggle='tab'>系&nbsp;统&nbsp;设&nbsp;置</a></li>
+                <li><a class="dp-btn dp-btn-default no_hover" href='#tab9' onclick="" data-toggle='tab'>店&nbsp;铺&nbsp;管&nbsp;理</a></li>
+            </ul>
+            <div class="menu-content">
+                <div class="tab-pane mydesk">
+                    <div class="tab-content-title">
+                        <h4 class="today_kpi">今日关键指标</h4>
+                    </div>
+                    <div class="kpi-detail">
+                        <div class="total_revenue">
+                            <ul class="kpi_title">
+                                <li>
+                                    <img src="../../images/money.png">
+                                    <span>营业额</span>
+                                </li>
+                                <li><span>昨&nbsp; &nbsp;日</span></li>
+                                <li><span>本&nbsp;&nbsp;周</span></li>
+                                <li><span>本&nbsp;&nbsp;月</span></li>
+                            </ul>
+                            <ul class="kpi_content">
+                                <li style="font-weight: normal">3650</li>
+                                <li style="font-weight: normal">3650</li>
+                                <li style="font-weight: normal">3650</li>
+                                <li style="font-weight: normal">3650</li>
+                            </ul>
+                        </div>
+                        <div class="consumer_num">
+                            <ul class="kpi_title">
+                                <li style="font-weight: normal">
+                                    <img src="../../images/customer.png" style="background-color: transparent" width="20" height="20">
+                                    <span>客单数</span>
+                                </li>
+                                <li style="font-weight: normal"><span>昨&nbsp;&nbsp;日</span></li>
+                                <li style="font-weight: normal"><span>本&nbsp;&nbsp;周</span></li>
+                                <li style="font-weight: normal"><span>本&nbsp;&nbsp;月</span></li>
+                            </ul>
+                            <ul class="kpi_content">
+                                <li style="font-weight: normal"><img src="">800</li>
+                                <li style="font-weight: normal">78</li>
+                                <li style="font-weight: normal">325</li>
+                                <li style="font-weight: normal">1250</li>
+                            </ul>
+                        </div>
+
+                        <div class="payment-ways">
+                            <ul class="kpi_title">
+                                <li>
+                                    <img src="../../images/paytype.png">
+                                    <span>收款类型</span>
+                                </li>
+                                <li><span>会 员 卡</span></li>
+                                <li><span>现&nbsp;&nbsp;金</span></li>
+                                <li><span>积&nbsp;&nbsp;分</span></li>
+                                <li><span>快捷支付</span></li>
+                            </ul>
+                            <ul class="kpi_content">
+                                <li style="font-weight: normal">&nbsp;&nbsp;</li>
+                                <li style="font-weight: normal">78</li>
+                                <li style="font-weight: normal">325</li>
+                                <li style="font-weight: normal">1250</li>
+                                <li style="font-weight: normal">1250</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="view-button" >
+                        <div id="turnoverBtn"><button type="button" class="btn btn-primary">营业额</button></div>
+                        <div id="consumerBtn"><button type="button" class="btn btn-primary">客单数</button></div>
+                    </div>
+                    <div id="turnover-chart" class="summary_chart" style="display: none;"></div>
+                    <div id="consumer-chart" class="summary_chart" style="display: none;"></div>
+                    <div><span>&nbsp;&nbsp;</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

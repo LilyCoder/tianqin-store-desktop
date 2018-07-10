@@ -2,7 +2,6 @@
  * Created by Lily on 2018/6/17.
  */
 (function ($) {
-    document.write("<script src='./layer/layer.js'></script>");
     window.pkgmgr = function(){
         var createGoodsInfoNode = function(goodsInfoObj) {
             var strhtml = "";
@@ -42,30 +41,33 @@
         //渲染套餐管理表格
         var renderPackageTableInfo = function(packList){
             $(".package_table>table>tbody").empty();
-            var goodsToggle = "<button type='button' class='btn btn-primary goodsToggle'>" +
-                                  "<span class='glyphicon glyphicon-chevron-right'></span>" +
-                              "</button>";
+            var goodsToggle = "<a href='' class='view-btn goodsToggle'>查看</a>";
             $.each(packList, function(i, o){
                 $(".package_table>table>tbody").append("<tr>"
                 + "<td class='pkgId'>" + o.pkgId + "</td>"
                 + "<td class='pkgName'>" + o.pkgName + "</td>"
+                + "<td class='pkgStoreName' data-storeid='" + o.storeId + "'>" + o.storeName + "</td>"
                 + "<td class='pkgPrice'>" + o.pkgPrice + "</td>"
                 + "<td class='pkgStatus'>" + o.pkgStatus + "</td>"
-                + "<td class='pkgGoodsDetail'>"  + goodsToggle + createPkgGoodsDetail(o.cmdys) + "</td>"
                 + "<td class='promRate'>" + o.promRate + "</td>"
                 + "<td class='cmsiMethod'>" + o.cmsiMethod + "</td>"
                 + "<td class='cmsiMoney'>" + o.cmsiMoney + "</td>"
                 + "<td class='cmsiRate'>" + o.cmsiRate + "</td>"
                 + "<td class='pkgRemark'>" + o.pkgRemark + "</td>"
+                + "<td class='pkgGoodsDetail'>"  + goodsToggle + createPkgGoodsDetail(o.cmdys) + "</td>"
                 + "<td class='rowOper'>"
-                + "<button type='button' class='btn btn-default row_delete' style='padding: 4px 8px;'>删除</button>"
-                + "<button type='button' class='btn btn-default row_update' style='padding: 4px 8px;'>修改</button>"
+                + "<button type='button' class='btn btn-default row_delete' style='padding: 4px 8px;'>"
+                +   "<span class='glyphicon glyphicon-trash' style='color: rgb(255, 58, 0);'></span>"
+                + "</button>"
+                + "<button type='button' class='btn btn-default row_update' style='padding: 4px 8px;'>"
+                + "<span class='glyphicon glyphicon-edit' style='color: rgb(255, 80, 225);'></span>"
+                + "</button>"
                 + "</td>"
                 + "</tr>");
             });
         };
         //点击查看商品详情
-        $(".package_table>table>tbody").on("click", "tr>td.pkgGoodsDetail>button.goodsToggle", function(e){
+        $(".package_table>table>tbody").on("click", "tr>td.pkgGoodsDetail>a.goodsToggle", function(e){
             var $detailTd = $(this).parent("td.pkgGoodsDetail");
             var htmlText = $detailTd.find(".pkg_goods_list").html();
             htmlText = htmlText.replace("ms_hidden", "");
@@ -145,24 +147,30 @@
         };
 
         //初始化套餐
-        $("a[href='#goods_sets_mgr']").click(function(e){
+        $("a[href='#goods_sets_mgr']", parent.document).click(function(e){
             $.ajax({
-                url: serverHost + "/packs",
+                url: config.serverHost + "/packs",
                 type: "get",
                 data: {},
                 dataType: "json",
+                beforeSend: function() {
+                    $("#pkg_loading").show();
+                },
                 success: function(resp){
                     if(resp.ret == "SUCCESS"){
                         var packList = resp.dat;
                         renderPackageTableInfo(packList);
                     } else {
                         toastr.options.positionClass = 'toast-top-center';
-                        toastr.error("获取套餐数据失败");
+                        toastr.error(resp.msg);
                     }
                 },
                 error: function(jqXHR, textStatus, exp){
                     toastr.options.positionClass = 'toast-top-center';
                     toastr.error("服务异常");
+                },
+                complete: function() {
+                    $("#pkg_loading").hide();
                 }
             });
         });
@@ -173,7 +181,7 @@
         $(".package_table>table>tbody").on("click", "tr>td.rowOper>button.row_delete", function(e){
             var $selectRow = $(this).parent("td.rowOper").parent();
             var delPkgReq = {
-                url: serverHost + "/delpkg"
+                url: config.serverHost + "/delpkg"
             };
             Ewin.confirm({message:"确定删除套餐吗？"}).on(function(status){
                 if(status) {
@@ -190,7 +198,8 @@
             var $selectRow = $(this).parent("td.rowOper").parent();
         });
 
-        $("#goods_sets_mgr ").find(".query_opera .search_button").click(function(){
+        //查询套餐
+        $(".packgagemgr").find(".query_opera .search_button").click(function(){
             //按照名称查询套餐
             var queryParam = {
                 "pkgName": $("#con_sets_name").val()
@@ -200,40 +209,48 @@
                 type: "get",
                 data: queryParam,
                 dataType: "json",
+                beforeSend: function() {
+                    $("#pkg_loading").show();
+                },
                 success: function(resp){
                     if(resp.ret == "SUCCESS"){
                         var packList = resp.dat;
                         renderPackageTableInfo(packList);
                     } else {
                         toastr.options.positionClass = 'toast-top-center';
-                        toastr.error("套餐数据加载失败");
+                        toastr.error(resp.msg);
                     }
                 },
                 error: function(jqXHR, textStatus, exp){
                     toastr.options.positionClass = 'toast-top-center';
                     toastr.error("服务异常");
+                },
+                complete: function() {
+                    $("#pkg_loading").hide();
                 }
             });
         });
 
-        $("#addPkgGoods").click(function(e){
-            //$(".all_goods_detail").removeClass("ms_hidden");
-            //$(".all_goods_detail").fadeIn();
-            //$("#addGoodsModal").addClass("theme_package");
+        $("button#addPkgGoods").click(function(e){
+            var topBody = $(top.document.body);
+            topBody.append($("#all_goods_detail"));
+            window.top.$("#all_goods_detail").modal("show");
+
+            var $ele = $(topBody).find("#all_goods_detail");
+            $ele.find("ul.goods_list_right_tab>li>a").click(function(e) {
+                $ele.find("ul.goods_list_right_tab>li").removeClass("active");
+                $ele.find(".pkggoods_tab_content").hide();
+                $(this).parent().addClass("active");
+                var href = $(this).attr("href");
+                $ele.find(href).fadeIn();
+            });
         });
 
-        $("button.goodslist_toggle").click(function(e){
-            if($("#addGoodsModal").hasClass("theme_package")) {
-                $("#addGoodsModal").removeClass("theme_package")
-            } else {
-                $("#addGoodsModal").addClass("theme_package");
-            }
-        });
-        //新增套餐
+        //获取商品管理
         $("#goods_sets_mgr .operation_button .add_button").click(function(e){
             //call api to get goods list detail
             $.ajax({
-                url: serverHost + "/commcate?status=1",
+                url: config.serverHost + "/commcate?status=1",
                 type: "get",
                 data: {},
                 dataType: "json",

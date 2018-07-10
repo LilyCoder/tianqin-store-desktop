@@ -5,12 +5,14 @@
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="./css/logon.css" rel="stylesheet">
+    <link href="./css/main.css" rel="stylesheet">
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/toastr.css" rel="stylesheet">
     <link href="./css/redmond/theme.css">
     <link href="./css/redmond/jquery-ui.min.css">
+    <link href="./css/password.css">
+    <link href="./css/storemgr.css">
     <script src="./js/common/jquery-3.2.1.min.js"></script>
     <script src="./js/common/jquery.validate.min.js"></script>
     <script src="./js/common/ajaxfileupload.js"></script>
@@ -21,6 +23,8 @@
     <script src="./js/common/component.js"></script>
     <script src="./js/common/themepopover.js"></script>
     <script src="./js/common/jquery-ui.min.js"></script>
+    <script src="./js/password.js"></script>
+    <script src="./js/common.js"></script>
     <script src="./js/main.js"></script>
 </head>
 
@@ -31,39 +35,44 @@
             <h1><img id="logoImg" src="./images/logo.jpg" width="65" height="65">&nbsp;&nbsp;宝莱坞店</h1>
         </div>
         <div class="header_right">
+            <div class="logonRole">当前登录：<span style="font-weight: normal">张三(员工)</span></div>
             <div class="aboutUs"><a href="#">关于我们</a></div>
-            <div class="logout-button"><button type="button" class="btn btn-primary" onclick="javascript:logout();">退出系统</button></div>
+            <div class="logout-button">
+                <button type="button" class="btn btn-primary" onclick="javascript:logout();">退出</button>
+            </div>
+            <div class="changepwd-button">
+                <button type="button" class="btn btn-primary">修改密码</button>
+            </div>
         </div>
     </div>
+    <!--onclick="javascript:initGoodsCateTab();"-->
+    <!--onclick="javascript:initOrderManagement();"-->
+    <!--onclick="javascript:initGoodsMgrInfo();"-->
+    <!--onclick="javascript:initEmployeeMgrInfo();"-->
+    <!--onclick="javascript:initVIPMgrInfo();"-->
+    <!--onclick="javascript:initReportCenter();"-->
+    <!--onclick="window.systemSetting.initSysSettingMgr();"-->
     <div class="mainContent">
-        <!--onclick="javascript:initEmployeeMgrInfo();"-->
-        <!--onclick="javascript:initGoodsMgrInfo();"-->
-        <!--onclick="javascript:initGoodsCateTab();"-->
-        <!--onclick="javascript:initOrderManagement();"-->
-        <!--onclick="javascript:initGoodsMgrInfo();"-->
-        <!--onclick="javascript:initEmployeeMgrInfo();"-->
-        <!--onclick="javascript:initReportCenter();"-->
         <ul class="nav tabs-left">
             <li><a class="dp-btn dp-btn-default no_hover" href="#tab1" data-toggle='tab'>我&nbsp;的&nbsp;桌&nbsp;面</a></li>
-            <li><a class="dp-btn dp-btn-default no_hover" href='#tab4' onclick="javascript:initGoodsCateTab();" data-toggle='tab'>消&nbsp;费&nbsp;管&nbsp;理</a></li>
-            <li><a class="dp-btn dp-btn-default no_hover" href='#tab7' onclick="javascript:initOrderManagement();" data-toggle='tab'>订&nbsp;单&nbsp;管&nbsp;理</a></li>
-            <li><a class="dp-btn dp-btn-default no_hover" href='#tab2' onclick="javascript:initGoodsMgrInfo();" data-toggle='tab'>商&nbsp;品&nbsp;管&nbsp;理</a></li>
-            <li><a class="dp-btn dp-btn-default no_hover" href='#tab3' onclick="javascript:initEmployeeMgrInfo();" data-toggle='tab'>员&nbsp;工&nbsp;管&nbsp;理</a></li>
-            <li><a class="dp-btn dp-btn-default no_hover" href='#tab8' onclick="javascript:initVIPMgrInfo();" data-toggle='tab'>会&nbsp;员&nbsp;管&nbsp;理</a></li>
-            <li><a class="dp-btn dp-btn-default no_hover" href='#tab5' onclick="javascript:initReportCenter();" data-toggle='tab'>报&nbsp;表&nbsp;中&nbsp;心</a></li>
-            <li><a class="dp-btn dp-btn-default no_hover" href='#tab6' onclick="window.systemSetting.initSysSettingMgr();" data-toggle='tab'>系&nbsp;统&nbsp;设&nbsp;置</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab4' data-toggle='tab'>消&nbsp;费&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab7' data-toggle='tab'>订&nbsp;单&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab2' data-toggle='tab'>商&nbsp;品&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab3' data-toggle='tab'>员&nbsp;工&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab8' data-toggle='tab'>会&nbsp;员&nbsp;管&nbsp;理</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab5' data-toggle='tab'>报&nbsp;表&nbsp;中&nbsp;心</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab6' data-toggle='tab'>系&nbsp;统&nbsp;设&nbsp;置</a></li>
+            <li><a class="dp-btn dp-btn-default no_hover" href='#tab9' onclick="" data-toggle='tab'>店&nbsp;铺&nbsp;管&nbsp;理</a></li>
         </ul>
-        <div id="triangle-left" style="display: none;"></div>
-        <div id="triangle-right" style="display: none;"></div>
         <div class="menu-content">
             <div class="tab-pane mydesk" id="tab1">
                 <div class="tab-content-title">
                     <h4 class="today_kpi">今日关键指标</h4>
-                    <div class="refresh">
-                        <button type="button" style="width: 100%;" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-refresh" style="color: rgb(255, 140, 60);">刷新</span>
-                        </button>
-                    </div>
+                    <!--<div class="refresh">-->
+                        <!--<button type="button" style="width: 100%;" class="btn btn-primary">-->
+                            <!--<span class="glyphicon glyphicon-refresh" style="color: rgb(255, 140, 60);">刷新</span>-->
+                        <!--</button>-->
+                    <!--</div>-->
                 </div>
                 <div class="kpi-detail">
                     <div class="total_revenue">
@@ -126,6 +135,7 @@
                 <ul class="nav goods_tabs_nav">
                     <li class="activeTab"><a href="#goods_mgr">商&nbsp;&nbsp;品</a></li>
                     <li><a href="#goods_sets_mgr" class="">套&nbsp;&nbsp;餐</a></li>
+                    <li><a href="#category_maintain" class="">类别维护</a></li>
                 </ul>
                 <div class="goods_tab_container">
                     <div id="goods_mgr" class="goods_tabs_content" style="display: none;">
@@ -144,7 +154,6 @@
                                 <div class="search_button mg_left"><button type="button" class="btn btn-primary">查&nbsp;询</button></div>
                             </div>
                             <div class="add_button mg_left" style="margin-left: 100px;"><button type="button" class="btn btn-primary">+ 新&nbsp;增</button></div>
-                            <div class="cate_maintain mg_left"><button type="button" class="btn btn-primary">类别维护</button></div>
                         </div>
                         <div class="goods_table">
                             <table class="table table-bordered">
@@ -451,30 +460,6 @@
                                             <td><input type="text" value="1"></span></td>
                                             <td><span class="glyphicon glyphicon-remove"></span></td>
                                         </tr>
-                                        <tr>
-                                            <td>003</td>
-                                            <td>黄叶菜</td>
-                                            <td><input type="text" value="1"></span></td>
-                                            <td><span class="glyphicon glyphicon-remove"></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>004</td>
-                                            <td>黄叶菜</td>
-                                            <td><input type="text" value="1"></span></td>
-                                            <td><span class="glyphicon glyphicon-remove"></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>005</td>
-                                            <td>黄叶菜</td>
-                                            <td><input type="text" value="1"></span></td>
-                                            <td><span class="glyphicon glyphicon-remove"></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>006</td>
-                                            <td>黄叶菜</td>
-                                            <td><input type="text" value="1"></span></td>
-                                            <td><span class="glyphicon glyphicon-remove"></span></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -555,126 +540,6 @@
                         </tr>
                         <tr class="staff_row">
                             <td>2</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr class="staff_row">
-                            <td>3</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr class="staff_row">
-                            <td>4</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr class="staff_row">
-                            <td>5</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr class="staff_row">
-                            <td>6</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>刘现栋</td>
-                            <td>男</td>
-                            <td>19941004</td>
-                            <td>店长</td>
-                            <td>2570520025825</td>
-                            <td>17758984254</td>
-                            <td>在职</td>
-                            <td>dhhd</td>
-                            <td class="rowOper">
-                                <button type="button" class="btn btn-default row_update">删除</button>
-                                <button type="button" class="btn btn-default row_delete">更新</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
                             <td>刘现栋</td>
                             <td>男</td>
                             <td>19941004</td>
@@ -772,22 +637,6 @@
                                 </tr>
                             </thead>
                             <tbody class="order_list">
-                                <!--<tr>-->
-                                    <!--<td class="orderId">1</td>-->
-                                    <!--<td class="item_name">商品1</td>-->
-                                    <!--<td class="item_num">1</td>-->
-                                    <!--<td class="item_unit_price">30.00</td>-->
-                                    <!--<td class="item_discount">80%</td>-->
-                                    <!--<td class="item_total_price">24.00</td>-->
-                                <!--</tr>-->
-                                <!--<tr>-->
-                                    <!--<td class="orderId">2</td>-->
-                                    <!--<td class="item_name">商品2</td>-->
-                                    <!--<td class="item_num">1</td>-->
-                                    <!--<td class="item_unit_price">5.00</td>-->
-                                    <!--<td class="item_discount">100%</td>-->
-                                    <!--<td class="item_total_price">5.00</td>-->
-                                <!--</tr>-->
                             </tbody>
                         </table>
                         <div class="order_settle">
@@ -1095,29 +944,7 @@
                                     <td>456</td>
                                 </tr>
                                 <tr>
-                                    <td>1</td>
-                                    <td>张三</td>
-                                    <td>男</td>
-                                    <td>12345678</td>
-                                    <td>2018/06/09</td>
-                                    <td>2018/06/09</td>
-                                    <td>68.20</td>
-                                    <td>850</td>
-                                    <td>456</td>
-                                </tr>
-                                <tr>
                                     <td>2</td>
-                                    <td>张三</td>
-                                    <td>男</td>
-                                    <td>12345678</td>
-                                    <td>2018/06/09</td>
-                                    <td>2018/06/09</td>
-                                    <td>68.20</td>
-                                    <td>850</td>
-                                    <td>456</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
                                     <td>张三</td>
                                     <td>男</td>
                                     <td>12345678</td>
@@ -1147,50 +974,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>张三</td>
-                                <td>男</td>
-                                <td>12345678</td>
-                                <td>2018/06/09</td>
-                                <td>2018/06/09</td>
-                                <td>68.20</td>
-                                <td>850</td>
-                                <td>456</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>张三</td>
-                                <td>男</td>
-                                <td>12345678</td>
-                                <td>2018/06/09</td>
-                                <td>2018/06/09</td>
-                                <td>68.20</td>
-                                <td>850</td>
-                                <td>456</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>张三</td>
-                                <td>男</td>
-                                <td>12345678</td>
-                                <td>2018/06/09</td>
-                                <td>2018/06/09</td>
-                                <td>68.20</td>
-                                <td>850</td>
-                                <td>456</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>张三</td>
-                                <td>男</td>
-                                <td>12345678</td>
-                                <td>2018/06/09</td>
-                                <td>2018/06/09</td>
-                                <td>68.20</td>
-                                <td>850</td>
-                                <td>456</td>
-                            </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>张三</td>
+                                    <td>男</td>
+                                    <td>12345678</td>
+                                    <td>2018/06/09</td>
+                                    <td>2018/06/09</td>
+                                    <td>68.20</td>
+                                    <td>850</td>
+                                    <td>456</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>张三</td>
+                                    <td>男</td>
+                                    <td>12345678</td>
+                                    <td>2018/06/09</td>
+                                    <td>2018/06/09</td>
+                                    <td>68.20</td>
+                                    <td>850</td>
+                                    <td>456</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -1210,7 +1015,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -1242,7 +1046,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -1362,32 +1165,6 @@
                                 <td class="orderNo">2018061200001</td>
                                 <td class="userName">卢莉</td>
                                 <td class="userContact">18202981920</td>
-                                <td class="orderPrice">54.80</td>
-                                <td class="commitTime">2018-06-12 21:20:00</td>
-                                <td class="empName">员工姓名</td>
-                                <td class="payTime">2018-06-12 22:32:00</td>
-                                <td class="payMode">现金支付</td>
-                                <td class="rowOper">
-                                    <button type="button" class="btn btn-primary orderRect">订单冲抵</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="orderNo">2018061200002</td>
-                                <td class="userName">张旭</td>
-                                <td class="userContact">15121721499</td>
-                                <td class="orderPrice">54.80</td>
-                                <td class="commitTime">2018-06-12 21:20:00</td>
-                                <td class="empName">员工姓名</td>
-                                <td class="payTime">2018-06-12 22:32:00</td>
-                                <td class="payMode">现金支付</td>
-                                <td class="rowOper">
-                                    <button type="button" class="btn btn-primary orderRect">订单冲抵</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="orderNo">2018061200003</td>
-                                <td class="userName">娜娜</td>
-                                <td class="userContact">15121721499</td>
                                 <td class="orderPrice">54.80</td>
                                 <td class="commitTime">2018-06-12 21:20:00</td>
                                 <td class="empName">员工姓名</td>
@@ -1542,11 +1319,154 @@
                 </div>
                 <div class="theme-popover-mask" style="display: none;"></div>
             </div>
+            <div class="tab-pane store_management" id="tab9" style="display: none">
+                <h4 class="title">店铺管理</h4>
+                <div class="operation_button">
+                    <div class="query_opera">
+                        <div style="float: left">
+                            <label for="con_storename" class="store_condition_label">店铺名称</label>
+                            <input type="text"  id="con_storename" name="con_storename" class="form-control con_select">
+                        </div>
+                        <div style="float: left">
+                            <label for="con_am_name" class="con_AMname_label">区域经理</label>
+                            <select id="con_am_name" class="con_select">
+                                <option>张三</option>
+                                <option>李四</option>
+                                <option>王二</option>
+                            </select>
+                        </div>
+                        <div class="search_button mg_left">
+                            <button type="button" class="btn btn-primary" style="width: 60px">查&nbsp;询</button>
+                        </div>
+                    </div>
+                    <div class="add_button mg_left">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_new_store">+新&nbsp;增</button>
+                    </div>
+                </div>
+                <div class="storemgr_table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>店铺编号</th>
+                                <th>店铺名称</th>
+                                <th>店铺地址</th>
+                                <th>店长姓名</th>
+                                <th>区域经理</td>
+                                <th>剩余短信（条）</th>
+                                <th>消费统计</th>
+                                <th>员工信息</th>
+                                <th>操&nbsp;&nbsp;作</td>
+                                <th>详情</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="storeNo">001</td>
+                                <td class="storeName">长江足浴</td>
+                                <td class="storeAddress">珠江三角洲十字</td>
+                                <td class="storeKeeperName">李大脚</td>
+                                <td class="storeAMName">李总管</td>
+                                <td class="msgRestNum">234</td>
+                                <td class="viewCosumeMsg">
+                                    <a href="#" class="btn btn-info view-btn">查看</a>
+                                </td>
+                                <td class="storeStaffList">
+                                    <a href="#" class="btn btn-info view-btn">查看</a>
+                                </td>
+                                <td class="rowOper">
+                                    <button type="button" class="btn btn-primary row_update">修改</button>
+                                    <button type="button" class="btn btn-primary row_delete">删除</button>
+                                </td>
+                                <td class="storeDetailInfo">
+                                    <a href="#" class="btn btn-info view-btn">详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="storeNo">002</td>
+                                <td class="storeName">长江足浴</td>
+                                <td class="storeAddress">珠江三角洲十字</td>
+                                <td class="storeKeeperName">李大脚</td>
+                                <td class="storeAMName">李总管</td>
+                                <td class="msgRestNum">234</td>
+                                <td class="viewCosumeMsg">
+                                    <a href="#" class="btn btn-info view-btn">查看</a>
+                                </td>
+                                <td class="storeStaffList">
+                                    <a href="#" class="btn btn-info view-btn" >查看</a>
+                                </td>
+                                <td class="rowOper">
+                                    <button type="button" class="btn btn-primary row_update">修改</button>
+                                    <button type="button" class="btn btn-primary row_delete">删除</button>
+                                </td>
+                                <td class="storeDetailInfo">
+                                    <a href="#" class="btn btn-info view-btn">详情</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal fade" id="add_new_store" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="background-color: #5bc0de">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);">新增店铺</span>
+                                </h4>
+                            </div>
+                            <div class="modal-body my-modal-body">
+                                <div class="store-form-group">
+                                    <label class="store_info_label">店铺名称</label>
+                                    <input type="text" name="new_store_name" id="new_store_name" required="required"
+                                           class="form-control store_left_info">
+                                </div>
+                                <div class="store-form-group">
+                                    <label class="store_info_label">店铺地址</label>
+                                    <input type="text" name="new_store_address" id="new_store_address"
+                                           class="form-control store_left_info">
+                                </div>
+                            </div>
+                            <div class="modal-footer my-footer">
+                                <button type="button" class="btn btn-default cancel_submit" data-dismiss="modal">
+                                    <span class="glyphicon glyphicon-remove"></span>取&nbsp;消
+                                </button>
+                                <button type="button" class="btn btn-primary" id="store_btn_submit">
+                                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确&nbsp;定
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="theme_title"></div>-->
+                    <!--<div class="page new_store_info">-->
+                        <!--<div class="store-form-group">-->
+                            <!--<label class="store_info_label">店铺名称</label>-->
+                            <!--<input type="text" name="new_store_name" id="new_store_name" required="required"-->
+                                   <!--class="form-control store_left_info">-->
+                        <!--</div>-->
+                        <!--<div class="store-form-group">-->
+                            <!--<label class="store_info_label">店铺地址</label>-->
+                            <!--<input type="text" name="new_store_address" id="new_store_address"-->
+                                   <!--class="form-control store_left_info">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="theme-footer">-->
+                        <!--<button type="button" class="btn btn-default cancel_submit" style="margin-right: 40px;">-->
+                            <!--<span class="glyphicon glyphicon-remove"></span>取&nbsp;消-->
+                        <!--</button>-->
+                        <!--<button type="button" class="btn btn-primary" id="store_btn_submit">-->
+                            <!--<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确&nbsp;定-->
+                        <!--</button>-->
+                    <!--</div>-->
+                </div>
+            </div>
         </div>
     </div>
     <div class="footer"></div>
 </div>
 </body>
-<script src="./js/pkgmanagement.js"></script>
+<script src="js/goods/pkgmanagement.js"></script>
 <script src="./js/systemsetting.js"></script>
+<script src="js/store/storemanagement.js"></script>
 </html>

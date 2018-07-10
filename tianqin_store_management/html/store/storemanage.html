@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>店铺管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../../css/main.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/toastr.css" rel="stylesheet">
+    <link href="../../css/redmond/theme.css">
+    <link href="../../css/redmond/jquery-ui.min.css">
+    <link href="../../css/storemgr.css">
+    <script src="../../js/common.js"></script>
+    <script src="../../layer/layer.js"></script>
+    <script src="../../js/common/jquery-3.2.1.min.js"></script>
+    <script src="../../js/common/jquery.validate.min.js"></script>
+    <script src="../../js/common/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../../js/common/jquery.validate.min.js" ></script>
+    <script src="../../js/common/bootstrap.min.js"></script>
+    <script src="../../js/common/echarts.min.js"></script>
+    <script src="../../js/common/toastr.min.js"></script>
+    <script src="../../js/common/component.js"></script>
+    <script src="../../js/common/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#addCateDialog").draggable();//为模态对话框添加拖拽
+            $("#add_new_cate").css("overflow", "hidden");//禁止模态对话框的半透明背景滚动
+        });
+    </script>
+    <style>
+        body {
+            margin-left: -30px;
+            margin-top: -10px;
+        }
+        .store_manage .operation_button{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            height: 34px;
+        }
+        .detail .col1, .detail .col2 {
+            margin-left: 20px;
+        }
+        .detail .value1, .detail .value2 {
+            margin-left: 5px;
+            font-weight: normal;
+        }
+        .store_manage td.rowOper .row_delete,
+        .store_manage td.rowOper .row_update{
+            width: 30px;
+        }
+    </style>
+</head>
+<body class="store_manage">
+    <div class="operation_button">
+        <div class="query_opera">
+            <div style="float: left">
+                <label for="con_storename" class="store_condition_label">店铺名称</label>
+                <input type="text"  id="con_storename" name="con_storename" class="form-control con_select">
+            </div>
+            <div style="float: left">
+                <label for="con_am_name" class="con_AMname_label">区域经理</label>
+                <select id="con_am_name" class="con_select">
+                </select>
+            </div>
+            <div class="search_button mg_left">
+                <button type="button" class="btn btn-primary" style="width: 60px">查&nbsp;询</button>
+            </div>
+        </div>
+        <div class="add_button mg_left">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_new_store">+新&nbsp;增</button>
+        </div>
+    </div>
+    <div class="storemgr_table pre-scrollable">
+        <table class="table table-bordered">
+            <thead>
+                <tr style="background-color: #6699cc">
+                    <th>店铺编号</th>
+                    <th>店铺名称</th>
+                    <th>店铺地址</th>
+                    <th>开店时间</th>
+                    <th>店长姓名</th>
+                    <th>区域经理</td>
+                    <th>剩余短信（条）</th>
+                    <th>消费统计</th>
+                    <th>员工信息</th>
+                    <th>店铺详情</th>
+                    <th style="width: 50px;">操&nbsp;&nbsp;作</td>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="storeNo">001</td>
+                <td class="storeName">长江足浴</td>
+                <td class="storeAddress">珠江三角洲十字</td>
+                <td class="openTime">2018-07-07</td>
+                <td class="storeKeeperName">李大脚</td>
+                <td class="storeAMName">李总管</td>
+                <td class="msgRestNum">234</td>
+                <td class="viewCosumeMsg">
+                    <a href="#" class="view-btn">查看</a>
+                </td>
+                <td class="storeStaffList">
+                    <a href="#" class="view-btn">查看</a>
+                </td>
+                <td class="storeDetailInfo">
+                    <a href="#" class="view-btn">查看</a>
+                </td>
+                <td class="rowOper">
+                    <button type="button" class="btn btn-primary row_delete">
+                        <span class="glyphicon glyphicon-trash" style="color: rgb(0, 2, 78);"></span>
+                    </button>
+                    <button type="button" data-target="#add_new_store" data-toggle="modal" class="btn btn-primary row_update">
+                        <span class="glyphicon glyphicon-edit" style="color: rgb(0, 2, 78);"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td class="storeNo">002</td>
+                <td class="storeName">长江足浴</td>
+                <td class="storeAddress">珠江三角洲十字</td>
+                <td class="openTime">2018-07-07</td>
+                <td class="storeKeeperName">李大脚</td>
+                <td class="storeAMName">李总管</td>
+                <td class="msgRestNum">234</td>
+                <td class="viewCosumeMsg">
+                    <a href="#" class="view-btn">查看</a>
+                </td>
+                <td class="storeStaffList">
+                    <a href="#" class="view-btn" >查看</a>
+                </td>
+                <td class="storeDetailInfo">
+                    <a href="" class="view-btn" data-target="#view_store_info" data-toggle="modal">查看</a>
+                    <div class="detail" style="display: none">
+                        <div>
+                            <label class="storeNo">店铺编号：</label><span class="value1">101010</span>
+                            <label class="storeName">店铺名称：</label><span class="value2">101010</span>
+                        </div>
+                        <div>
+                            <label class="col1">店铺地址：</label><span class="value1">101010</span>
+                            <label class="col2">店铺编号：</label><span class="value2">101010</span>
+                        </div>
+                        <div>
+                            <label class="col1">店铺电话：</label><span class="value1">101010</span>
+                            <label class="col2">开店时间：</label><span class="value2">101010</span>
+                        </div>
+                        <div>
+                            <label class="col1">店长编号：</label><span class="value1">101010</span>
+                            <label class="col2">店长姓名：</label><span class="value2">101010</span>
+                        </div>
+                        <div>
+                            <label class="col1">经理编号：</label><span class="value1">101010</span>
+                            <label class="col2">经理姓名：</label><span class="value2">101010</span>
+                        </div>
+                        <div>
+                            <label class="col1">经理电话：</label><span class="value1">101010</span>
+                            <label class="col2">经理电话：</label><span class="value2">101010</span>
+                        </div>
+                    </div>
+                </td>
+                <td class="rowOper">
+                    <button type="button" class="btn btn-primary row_delete">
+                        <span class="glyphicon glyphicon-trash" style="color: rgb(0, 2, 78);"></span>
+                    </button>
+                    <button type="button" data-target="#add_new_store" data-toggle="modal" class="btn btn-primary row_update">
+                        <span class="glyphicon glyphicon-edit" style="color: rgb(0, 2, 78);"></span>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="modal fade" id="view_store_info" tabindex="-1" role="dialog"
+             aria-labelledby="storeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" id="new_store_dialog" role="document">
+                <div class="modal-content" style="background-color: #5bc0de">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="storeModalLabel" style="text-align: center">
+                            店铺详情
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pagination_bar">
+        <div class="p_panel">
+            <div class="last_page">
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-backward" style="color: rgb(0, 2, 78);">上一页</span>
+                </button>
+            </div>
+            <div class="page_index">
+                <h4>第<span class="page_no">1</span>页</h4>
+            </div>
+            <div class="page_size">
+                <h4>每页
+                <select name="rp" style="height: 24px;margin-top: -7px">
+                    <option value="25">5</option>
+                    <option value="30">10</option>
+                    <option value="40">15</option>
+                    <option value="50">20</option>
+                </select>条</h4>
+            </div>
+            <div class="total">
+                <h4>总共<span class="page_number">23</span>页</h4>
+            </div>
+            <div class="next_page">
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-forward" style="color: rgb(0, 2, 78);">下一页</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="store_loading" class="loading" style="display: none"></div>
+    <div class="modal fade" id="add_new_store" tabindex="-1" role="dialog"
+         aria-labelledby="addStoreModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #5bc0de">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="addStoreModalLabel" style="text-align: center">
+                        <span class="glyphicon glyphicon-star-empty" style="color: rgb(255, 140, 60);">新增店铺</span>
+                    </h4>
+                </div>
+                <div class="modal-body my-modal-body">
+                    <div class="store-form-group">
+                        <label class="store_info_label">店铺名称</label>
+                        <input type="text" name="new_store_name" id="new_store_name" required="required"
+                               class="form-control store_left_info">
+                    </div>
+                    <div class="store-form-group">
+                        <label class="store_info_label">店铺地址</label>
+                        <input type="text" name="new_store_address" id="new_store_address"
+                               class="form-control store_left_info">
+                    </div>
+                    <div class="store-form-group">
+                        <label class="store_info_label">店&nbsp;&nbsp;长</label>
+                        <select id="new_store_keeper" class="form-control store_left_info">
+                        </select>
+                    </div>
+                    <div class="store-form-group">
+                        <label class="store_info_label">区域经理</label>
+                        <select id="new_store_AM" class="form-control store_left_info">
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer my-footer">
+                    <button type="button" class="btn btn-default cancel_submit" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span>取&nbsp;消
+                    </button>
+                    <button type="button" class="btn btn-primary" id="store_btn_submit">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确&nbsp;定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../js/store/storemanagement.js"></script>
+</html>

@@ -36,18 +36,15 @@
     window.POPOVER = function() {
         return {
             open: function(option) {
-                $(".theme_title").text(option.title);
-                $(".theme-popover").fadeIn();
-                $(".theme-popover").fadeIn("slow");
-                $(".theme-popover-close").show();
-                $(".theme-popover-mask").show();
+                $("#" + option.id).text(option.title);
+                $("#" + option.id).fadeIn("slow");
                 scroll = $(window).scrollTop();
                 $('html').css({'overflow':'hidden',
                     'position':'fixed',
                     'top':'- '+scroll+'px'});
             },
-            close: function(){
-                $(".theme-popover").hide();
+            close: function(option){
+                $("#" + option.id).hide();
                 $(".theme-popover-close").hide();
                 $(".all_goods_detail").hide();
                 $(".theme-popover-mask").hide();

@@ -1,5 +1,3 @@
-
-var serverHost = "http://192.168.132.104:8080/stm";
 $(document).ready(function() {
     //Default Action
     $(".tab-pane").hide();
@@ -25,6 +23,51 @@ $(document).ready(function() {
         return false;
     });
 
+    if(!loginUser.isAutoLogon && (loginUser.password == config.defaultPwd)) {
+        $("#update_password_modal").modal("show");
+    }
+
+    //确认提交密码
+    $(document).on("click", ".changepwd-card .confirm-btn", function(e) {
+        //校验是否为空
+        var isValid = true;
+        var oldPwd = $("input[name='oldPassword']").val();
+        if(oldPwd != '') {
+            $(".oldpwd_label").remove();
+        } else {
+            $(".oldpwd_label").empty();
+            $('input[name="oldPassword"]').after("<label class='oldpwd_label'><font>当前密码不能为空</font></label>");
+            isValid = false;
+        }
+
+        var newPwd = $("input[name='newpassword']").val();
+        //验证密码
+        if(newPwd != '') {
+            $(".newpwd_label").remove();
+        }else{
+            $(".newpwd_label").empty();
+            $('input[name="newpassword"]').after("<label class='newpwd_label'><font>新密码不能为空</font></label>");
+            isValid = false;
+        }
+
+        var confirmPwd = $("input[name='repassword']").val();
+        if(confirmPwd != '' && confirmPwd == newPwd) {
+            $(".repwd_label").remove();
+        }else{
+            $(".repwd_label").empty();
+            $('input[name="repassword"]').after("<label class='repwd_label'><font>确认密码与新密码不一致</font></label>");
+            isValid = false
+        }
+
+        if(isValid) {
+            $.ajax({
+                url: config.serverHost + "",
+                type: "post",
+                data: {}
+            });
+        }
+    });
+
     ///////////////////////////////////我的桌面///////////////////////////////
     //我的桌面刷新按钮
     $(".refresh").click(function(){
@@ -43,9 +86,9 @@ $(document).ready(function() {
     });
 
     //初始化我的桌面数据
-    initMyDeskData();
-    //消费管理信息
-    initConsumerMgrInfo();
+    //initMyDeskData();
+    ////消费管理信息
+    //initConsumerMgrInfo();
 
     //////////////////////////////////消费管理//////////////////////////////////////
     //消费管理,添加订单商品或者移除
@@ -121,7 +164,7 @@ $(document).ready(function() {
         layer.confirm("确认删除订单？", {
             btn: ['取消','确定'],//按钮
             skin: "confirm_layer",
-            area:["345px", "345px"]
+            area:["145px", "145px"]
         }, function(){
         }, function(){
             $("div.order-info").removeClass("activeTab");
@@ -263,7 +306,7 @@ $(document).ready(function() {
             "price": Number($(".order_settle .total_amt").text())
         }
         $.ajax({
-            url: serverHost + "/pmcheck",
+            url: config.serverHost + "/pmcheck",
             type: "get",
             async: false,
             data: queryParam,
@@ -277,6 +320,12 @@ $(document).ready(function() {
     });
 
     ///////////////////////////////////商品管理/////////////////////////////////////
+    //获取新增会员
+    $(".goods_tabs_content").hide();
+    $(".ul.goods_tabs_nav li").removeClass("activeTab");
+    $("ul.goods_tabs_nav li:first").addClass("activeTab").show();
+    $(".goods_tabs_content:first").show();
+
     $("ul.goods_tabs_nav li").click(function() {
         if($(this).hasClass("activeTab")){
             return false;
@@ -289,348 +338,7 @@ $(document).ready(function() {
         return false;
     });
 
-    //商品管理-添加商品
-    $("#goods_mgr").find(".operation_button .add_button>button").click(function(){
-        var options = {
-            "title": "新增商品"
-        };
-        $("#goods_btn_submit").attr("data-action", "AG");
-        $(".packinfo_update").hide();
-        $(".goodsinfo_update").show();
-        POPOVER.open(options);
-    });
 
-    $("input[name='uploadGoodsImage']").change(function(){
-        var file = this.files[0];
-        name = file.name;
-        size = file.size;
-        type = file.type;
-    });
-
-    //图片上传
-    $("#img_submit_btn").click(function(){
-        var fd = new FormData();
-        fd.append("desc", "123456");
-        fd.append("uploadFile", $("input[name='MultipartFile']")[0].files[0]);
-        $.ajax({
-            url: serverHost + "/upload",
-            type: "POST",
-            data: fd,
-            processData: false,
-            contentType: false,
-            dataType: 'json', //返回值类型 一般设置为json
-            async : false,   //是否是异步
-            success: function(resp){
-                if(resp.ret == "SUCCESS"){
-                    var filename = resp.dat;
-                    $("#uploadGoodsImage").attr("value", filename);
-                    alert(resp.msg);
-                } else {
-                    alert(resp.msg);
-                }
-            },
-            error: function(jqXHR, status, exp){
-                alert(exp);
-            }
-        });
-    });
-
-    $("#goods_btn_submit").click(function(){
-        //send ajax to save goods info
-        var deductWays = $("#selectDeductWays").find("option:selected").text();
-        var btnAction = $("#goods_btn_submit").attr("data-action");
-        var cmsiMethod = "";
-        if(deductWays == "固定金额") {
-            cmsiMethod = "1";
-        } else if(deductWays == "提成比例"){
-            cmsiMethod = "2";
-        }
-        var newGoodsInfo = {
-            "cmdyName": $("input[name='goodsName']").val(),
-            "cmdyUprice": $("input[name='goodsUnitPrice']").val(), //商品单价
-            "cmdyCost": $("input[name='goodsCosts']").val(),
-            "cmdyUnit": $("#goodsUnitSlect").find("option:selected").text(),
-            "cmdyCategory": $("#selectGoodsCate").find("option:selected").attr("data-cateid"),
-            "promRate": $("input[name='goodsRates']").val(),
-            "cmsiMethod": cmsiMethod,
-            "cmsiMoney": (deductWays == "固定金额")?
-                $("input[name='deductValue']").val():"",
-            "cmsiRate": (deductWays == "提成比例")?
-                $("input[name='deductValue']").val():"",
-            "cmdyRemark": $("input[name='goodsRemark']").val()
-        };
-        $.ajax({
-            url: serverHost + "/addcommo",
-            type: "post",
-            async: false,
-            data: newGoodsInfo,
-            dataType: "json",
-            success: function(resp) {
-                if(resp.ret == "SUCCESS") {
-                    try{
-                        if(btnAction == "AG") {
-                            //在表格中添加一行
-                            addNewRowGoodsHtml(newGoodsInfo);
-                        } else if(btnAction == "UG"){
-                            updateRowGoodsHtml(newGoodsInfo);
-                        }
-                        toastr.options.positionClass = 'toast-top-center';
-                        toastr.success('提交数据成功');
-                        POPOVER.close();
-                    }catch (e) {
-                    }
-                } else {
-                    if(btnAction == "AG") {
-                        toastr.options.positionClass = 'toast-top-center';
-                        toastr.error("添加商品失败");
-                    } else if(btnAction == "UG"){
-                        toastr.options.positionClass = 'toast-top-center';
-                        toastr.error("商品信息更新失败");
-                    }
-                }
-            },
-            error: function(jqXHR, textStatus, exp) {
-                toastr.options.positionClass = 'toast-top-center';
-                toastr.error("服务异常");
-            }
-        });
-    });
-
-    /**
-     * 修改商品信息
-     */
-    $(".goods_table>table>tbody").on("click", "tr>td.rowOper>button.row_update", function(){
-        //取表格中的某一行
-        var $selections = $(this).parent("td.rowOper").parent();
-        $selections.addClass("update_row_goods");
-        //打开修改窗口
-        $("input[name='goodsName']").val($selections.find("td.goodsName").text());
-        $("input[name='goodsUnitPrice']").val($selections.find("td.goodsUnitPrice").text());
-        $("input[name='goodsCosts']").val($selections.find("td.goodsCost").text());
-        $("input[name='goodsRates']").val($selections.find("td.goodsRate").text());
-        $("input[name='deductValue']").val($selections.find("td.deductMoney").text() != ""?
-            $selections.find("td.deductMoney").text():$selections.find("td.deductRate").text());
-        $("input[name='goodsRemark']").val($selections.find("td.goodsMark").text());
-        //删除class值为modal-backdrop的标签，可去除阴影
-        $("#goods_btn_submit").attr("data-action", "UG");
-        var options = {
-            title: "修改商品信息"
-        };
-        POPOVER.open(options);
-    });
-
-    /**
-     * 删除商品
-     */
-    $(".goods_table>table>tbody").on("click", "tr>td.rowOper>button.row_delete", function(){
-        var $selections = $(this).parent("td.rowOper").parent();
-        //取表格中的某一行
-        Ewin.confirm({message: "确定删除商品?"}).on(function (status) {
-            if(status) {
-                $selections.remove();
-                var rowNo = 1;
-                $(".goods_table>table>tbody>tr").each(function(){
-                    $(this).find("tr.goodsNo").text(rowNo);
-                    rowNo = rowNo + 1;
-                });
-            }
-        });
-    });
-
-    /**
-    * 查询商品
-    */
-    $(".goods-management .operation_button .search_button>button").click(function(e) {
-        var checkText = $("#con_goods_cate").find("option:selected").attr("data-cateid");
-        var queryParam = {
-            "commoName": $("input[name='con_goods_name']").val(),
-            "categoryId": checkText,
-            "sign": "yes"
-        };
-        $.ajax({
-            url: serverHost + "/commodity",
-            type: "get",
-            data: queryParam,
-            dataType: "json",
-            success: function(resp) {
-                if(resp.ret == "SUCCESS") {
-                    $(".goods_table>table>tbody").empty();
-                    var rowNo = 1;
-                    $.each(resp.dat.commodity, function(i, n) { //商品列表
-                        $(".goods_table>table>tbody").append("<tr>"
-                        + "<td class='goodsNo' style='text-align: left'>" + rowNo + "</td>"
-                        + "<td class='goodsName'>" + n.cmdyName + "</td>"
-                        + "<td class='goodsUnitPrice'>" + n.cmdyUprice + "</td>"
-                        + "<td class='goodsCost'>" + n.cmdyCost + "</td>"
-                        + "<td class='goodsUnit'>" + n.cmdyUnit + "</td>"
-                        + "<td class='goodsDeduct'>" + n.promRate + "</td>"
-                        + "<td class='goodsCate'>" + n.cmdyCategory + "</td>"
-                        + "<td class='deductWays'>" + n.cmsiMethod + "</td>"
-                        + "<td class='deductMoney'>" + n.cmsiMoney + "</td>"
-                        + "<td class='deductRate'>" + n.cmsiRate + "</td>"
-                        + "<td class='goodsMark'>" + n.cmdyRemark + "</td>"
-                        + "<td class='rowOper'>"
-                        + "<button type='button' class='btn btn-default row_delete' style='padding: 4px 8px;'>删除</button>"
-                        + "<button type='button' class='btn btn-default row_update' style='padding: 4px 8px;'>更新</button>"
-                        + "</td>"
-                        + "</tr>");
-                        rowNo = rowNo + 1;
-                    });
-                }else{
-                    toastr.options.positionClass = 'toast-top-center';
-                    toastr.error("查询失败");
-                }
-            },
-            error: function(jqXHR, textStatus, exp){
-                toastr.options.positionClass = 'toast-top-center';
-                toastr.error("服务异常");
-            }
-        });
-    });
-
-    ////////////////////////////////////////===员工管理===///////////////////////////////
-    //查询员工信息
-    $(".employee-management .operation_button .search_button>button").click(function(e){
-        var queryParam = {
-            "employeeMes": $("input[name='con_staff_name']").val(),
-            "position": $("#con_staff_pos option:selected").text(),
-            "onJob": ($("#con_staff_onjob option:selected").text())=="是"?"1":"3"
-        };
-        $.ajax({
-            url: serverHost + "/employee",
-            type: "get",
-            async : false,
-            data: queryParam,
-            dataType: "json",
-            success: function(resp) {
-                try{
-                    if(resp.ret == "SUCCESS"){
-                        var qryStaffLst = resp.dat;
-                        renderEmployeeTable(qryStaffLst);
-                    } else {
-                        toastr.options.positionClass = 'toast-top-center';
-                        toastr.error("查询失败");
-                    }
-                }catch (e) {
-
-                }
-            },
-            error: function(msg) {
-                toastr.options.positionClass = 'toast-top-center';
-                toastr.error("服务异常");
-            }
-
-        });
-    });
-
-    /**
-     * 添加员工信息
-     */
-    $(".employee-management .add_button>button").click(function(e){
-        var options = {
-            title: "添加员工"
-        };
-        //$.datetimepicker.setLocale('en');
-        $( "#datepicker" ).datepicker({
-            dateFormat: 'yy-mm-dd',
-            dayNamesMin: ['日','一','二','三','四','五','六'],
-            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-            showButtonPanel:true,//是否在日期面板中显示按钮
-            currentText: '今天',//给今天按钮设置文字
-            closeText: '关闭',//给关闭按钮设置文字
-            firstDay:1,//设置一周从星期一开始
-            showMonthAfterYear:true,
-            lang: "zh",
-            theme: "redmond"
-        });
-        $("#staff_btn_submit").attr("data-action", "AG");
-        POPOVER.open(options);
-    });
-    $("#staff_btn_submit").click(function(e) {
-        var rowActin = $("#staff_btn_submit").attr("data-action");
-        //点击提交
-        var employee = {
-            "epyName" : $("input[name='staffName']").val(),
-            "epySex": $("#staffSex option:selected").text(),
-            "epyBirthday": $("input[name='staffBirthday']").val(),
-            "epyPosition": $("input[name='staffPos']").val(),
-            "epyIdentity": $("input[name='staffIdenty']").val(),
-            "epyContact": $("input[name='staffTel']").val(),
-            "epyOnjob": ($("#staffObJob").text() == "是"?"1":"3"),
-            "epyRemark": $("input[name='staffMark']").val()
-        };
-        $.ajax({
-            url: serverHost + "/addemplo",
-            type: "post",
-            async: false,
-            data: employee,
-            dataType: "json",
-            success: function(resp) {
-                if(resp.ret == "SUCCESS") {
-                    try{
-                        if(rowActin == "AG") {
-                            //在表格中添加一行
-                            addNewEmployeeRowHtml(employee);
-                        } else {
-                            updateEmployeeRowHtml(employee);
-                        }
-                        toastr.options.positionClass = 'toast-top-center';
-                        toastr.success('提交数据成功');
-                        POPOVER.close();
-                    }catch (e) {
-                        console.log(resp.msg);
-                    }
-                } else {
-                    toastr.options.positionClass = 'toast-top-center';
-                    toastr.error("更新失败");
-                }
-            },
-            error: function(jqXHR, textStatus, exp){
-                toastr.options.positionClass = 'toast-top-center';
-                toastr.error("服务异常");
-            }
-        });
-    });
-
-    /**
-     *修改员工信息 delegate("tr", "click", function()
-     */
-    $(".employee_table>table>tbody").on("click", "tr>td.rowOper>button.row_update", function(e){
-        $(".employee_table>table>tbody>tr").removeClass("update_staff_row");
-        //取表格中的某一行
-        var $selections = $(this).parent("td.rowOper").parent();
-        $selections.addClass("update_staff_row");
-        //打开修改窗口
-        $("input[name='staffName']").attr("value", $selections.find("td.staffName").text());
-        $("input[name='staffSex']").attr("value",$selections.find("td.staffSex").text());
-        $("input[name='staffBirthday']").attr("value", $selections.find("td.staffAge").text());
-        $("input[name='staffPos']").attr("value", $selections.find("td.staffPos").text());
-        $("input[name='staffIdenty']").attr("value", $selections.find("td.staffId").text());
-        $("input[name='staffTel']").attr("value", $selections.find("td.staffTel").text());
-        $("input[name='staffObJob']").text($selections.find("td.staffOnJob").text());
-        $("input[name='staffMark']").attr("value", $selections.find("td.staffMark").text());
-        var options = {
-            title: "修改商品信息"
-        };
-        $("#staff_btn_submit").attr("data-action", "UG");
-        POPOVER.open(options);
-
-    });
-
-    //删除员工
-    $(".employee_table>table>tbody").on("click", "tr>td.rowOper>button.row_delete", function(e){
-        var $selections = $(this).parent("td.rowOper").parent();
-        Ewin.confirm({message: "确定删除员工信息?"}).on(function(status){
-            if(status) {
-                $selections.remove();
-                var rowNo = 1;
-                $(".employee_table>table>tbody>tr").each(function(i){
-                    $(this).find("td.staffNo").text(rowNo);
-                    rowNo = rowNo + 1;
-                });
-            }
-        });
-    });
 
     ///////////////////////////订单管理///////////////////////////////////
     /**
@@ -651,7 +359,7 @@ $(document).ready(function() {
             queryParam.payMode = "3";
         }
         $.ajax({
-            url: serverHost + "/getorder",
+            url: config.serverHost + "/getorder",
             type: "get",
             data: queryParam,
             dataType: "json",
@@ -685,7 +393,7 @@ $(document).ready(function() {
         Ewin.confirm({message: "确定删除吗？"}).on(function(status){
             if(status) {
                 $.ajax({
-                    url: serverHost + "/deluser",
+                    url: config.serverHost + "/deluser",
                     type: "post",
                     data: param,
                     dataType: "json",
@@ -752,7 +460,7 @@ $(document).ready(function() {
         };
         var action = $("#vip_btn_submit").attr("data-action");
         $.ajax({
-            url: serverHost + "/adduser",
+            url: config.serverHost + "/adduser",
             type: "post",
             data: user,
             dataType: "json",
@@ -786,7 +494,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: serverHost + "/users",
+            url: config.serverHost + "/users",
             type: "get",
             data: queryParam,
             dataType: "json",
@@ -827,7 +535,7 @@ $(document).ready(function() {
         var yearMon = "" + myDate.getFullYear() + "-" + ((myDate.getMonth() + 1) < 10?
             "0"+(myDate.getMonth() + 1):""+(myDate.getMonth() + 1));
         $.ajax({
-            url: serverHost + "/uincrease?month=" + yearMon,
+            url: config.serverHost + "/uincrease?month=" + yearMon,
             type: "get",
             data:{},
             dataType: "json",
@@ -872,7 +580,7 @@ $(document).ready(function() {
         $("#sm_month_vip_percent tbody").empty();
         //获取当月消费会员比例
         $.ajax({
-            url: serverHost + "/consumrate",
+            url: config.serverHost + "/consumrate",
             type: "get",
             data: {},
             dataType: "json",
@@ -916,7 +624,7 @@ $(document).ready(function() {
         $("#half_year_notshow_vip tbody").empty();
         //获取当月消费会员比例
         $.ajax({
-            url: serverHost + "/unconsume",
+            url: config.serverHost + "/unconsume",
             type: "get",
             data: {},
             dataType: "json",
@@ -963,7 +671,7 @@ $(document).ready(function() {
         var yearMon = date.getFullYear() + "-" +
             (date.getMonth() < 10? "0"+date.getMonth():""+date.getMonth());
         $.ajax({
-            url: serverHost + "/commrate?month=" + yearMon,
+            url: config.serverHost + "/commrate?month=" + yearMon,
             type: "get",
             data: {},
             dataType: "json",
@@ -1007,7 +715,7 @@ $(document).ready(function() {
         var yearMon = date.getFullYear() + "-" +
             (date.getMonth() < 10? "0"+date.getMonth():""+date.getMonth());
         $.ajax({
-            url: serverHost + "/commrate?month=" + yearMon,
+            url: config.serverHost + "/commrate?month=" + yearMon,
             type: "get",
             async: false,
             data: {},
@@ -1087,31 +795,6 @@ function updateRowGoodsHtml(newGoodsInfo) {
     $updateRow.find("td.goodsMark").text(newGoodsInfo.cmdyRemark);
 }
 
-/**
- * 添加新的一行员工信息
- */
-function addNewEmployeeRowHtml(newEmployee) {
-    var $lastRowEle = $(".employee_table>table>tbody>tr").last();
-    var lastRowNo = $lastRowEle.find(".staffNo");
-    var strHtml = "<tr>";
-    var rowOperCol = "<td class='rowOper'>"
-                    + "<button type='button' class='btn btn-default row_delete'>删除</button>"
-                    + "<button type='button' class='btn btn-default row_update'>修改</button>"
-                    + "</td>";
-    strHtml += "<td class='staffNo'>" + (parseInt(lastRowNo) + 1) + "</td>";
-    strHtml += "<td class='staffName'>" + (newEmployee.epyName!=null?newEmployee.epyName:"") + "</td>";
-    strHtml += "<td class='staffSex'>" + (newEmployee.epySex!=null?newEmployee.epySex:"") + "</td>";
-    strHtml += "<td class='staffAge'>" + (newEmployee.epyBirthday!=null?newEmployee.epyBirthday:"") + "</td>";
-    strHtml += "<td class='staffPos'>" + (newEmployee.epyPosition!=null?newEmployee.epyPosition:"") + "</td>";
-    strHtml += "<td class='staffId'>" + (newEmployee.epyIdentity!=null?newEmployee.epyIdentity:"") + "</td>";
-    strHtml += "<td class='staffTel'>" + (newEmployee.epyContact!=null?newEmployee.epyContact:"") + "</td>";
-    strHtml += "<td class='staffOnJob'>" + (newEmployee.epyOnjob!=null?newEmployee.epyOnjob:"") + "</td>";
-    strHtml += "<td class='staffMark'>" + (newEmployee.epyRemark!=null?newEmployee.epyRemark:"") + "</td>";
-    strHtml += rowOperCol;
-    strHtml += "</tr>";
-    $(".goods_table>table>tbody").append(strHtml);
-}
-
 //更新员工信息
 function updateEmployeeRowHtml(newEmployee) {
     var $updateRow = $(".employee_table tr.update_staff_row");
@@ -1161,14 +844,14 @@ function updateVIPUserInfo(user) {
 /**
  * 初始化我的桌面数据
  */
-function initMyDeskData() {
+function initMyDeskData(){
     var dateArray = [];
     var turnoverData = [];
     var consumerDateArray = [];
     var consumerData = [];
     //send ajax to get mydesk data
     $.ajax({
-        url: serverHost + "/home",
+        url: config.serverHost + "/home",
         type: "get",
         async : false,
         data:{},
@@ -1240,7 +923,7 @@ function initMyDeskErrorHandle() {
 function initConsumerMgrInfo() {
     //send ajax to get goods list
     $.ajax({
-        url: serverHost + "/commcate",
+        url: config.serverHost + "/commcate",
         type: "get",
         async : false,
         data:{},
@@ -1380,128 +1063,12 @@ function createGoodsInfoNode(goodsInfoObj) {
 }
 
 /**
- * 初始化商品管理信息
- */
-function initGoodsMgrInfo(){
-    //获取新增会员
-    $(".goods_tabs_content").hide();
-    $(".ul.goods_tabs_nav li").removeClass("activeTab");
-    $("ul.goods_tabs_nav li:first").addClass("activeTab").show();
-    $(".goods_tabs_content:first").show();
-
-    $.ajax({
-        url: serverHost + "/commodity?sign=1",
-        type: "get",
-        data:{},
-        dataType: "json",
-        success: function(resp) {
-            if(resp.ret == "SUCCESS") {
-                var cate = resp.dat.category;
-                $("#con_goods_cate").empty();
-                    $.each(cate, function(index, obj) { //商品类别
-                    $("#con_goods_cate").append("<option data-cateid='" + cate[index].cmdycateId + "'>" + cate[index].cmdycateName + "</option>");
-                    $("#selectGoodsCate").append("<option data-cateid='" + cate[index].cmdycateId + "'>" + cate[index].cmdycateName + "</option>");
-                });
-
-                //初始化商品表
-                var commondityLst = resp.dat.commodity;
-                var rowNo = 1;
-                $(".goods_table>table>tbody").empty();
-                $.each(commondityLst, function(i, n) { //商品列表
-                    $(".goods_table>table>tbody").append("<tr>"
-                    + "<td class='goodsNo' style='text-align: left'>" + rowNo + "</td>"
-                    + "<td class='goodsName'>" + n.cmdyName + "</td>"
-                    + "<td class='goodsUnitPrice'>" + n.cmdyUprice + "</td>"
-                    + "<td class='goodsCost'>" + n.cmdyCost + "</td>"
-                    + "<td class='goodsUnit'>" + n.cmdyUnit + "</td>"
-                    + "<td class='goodsDeduct'>" + n.promRate + "</td>"
-                    + "<td class='goodsCate'>" + n.cmdyCategory + "</td>"
-                    + "<td class='deductWays'>" + n.cmsiMethod + "</td>"
-                    + "<td class='deductMoney'>" + n.cmsiMoney + "</td>"
-                    + "<td class='deductRate'>" + n.cmsiRate + "</td>"
-                    + "<td class='goodsMark'>" + n.cmdyRemark + "</td>"
-                    + "<td class='rowOper'>"
-                    + "<button type='button' class='btn btn-default row_delete' style='padding: 4px 8px;'>删除</button>"
-                    + "<button type='button' class='btn btn-default row_update' style='padding: 4px 8px;'>更新</button>"
-                    + "</td>"
-                    + "</tr>");
-                    rowNo = rowNo + 1;
-                });
-            } else {
-                toastr.options.positionClass = 'toast-top-center';
-                toastr.error("获取商品列表失败");
-            }
-        },
-        error: function(msg) {
-            toastr.options.positionClass = 'toast-top-center';
-            toastr.error("服务异常");
-        }
-    });
-}
-
-/**
- * 初始化员工管理信息
- */
-function initEmployeeMgrInfo() {
-    $(".employee_table>table>tbody").empty();
-    $.ajax({
-        url: serverHost + "/employee",
-        type: "get",
-        data:{},
-        dataType: "json",
-        success: function(resp) {
-            if(resp.ret == "SUCCESS") {
-                //初始化员工表
-                var staffLst = resp.dat;
-                renderEmployeeTable(staffLst);
-            } else {
-                toastr.options.positionClass = 'toast-top-center';
-                toastr.error("获取员工信息失败");
-            }
-        },
-        error: function(msg) {
-            toastr.options.positionClass = 'toast-top-center';
-            toastr.error("服务异常");
-        }
-    });
-}
-
-function renderEmployeeTable(staffLst) {
-    $(".employee_table>table>tbody").empty();
-    $.each(staffLst, function(i, n) {
-        var isOnJob = null;
-        if(n.epyOnjob == "1") {
-            isOnJob = "在职";
-        } else if(n.epyOnjob == "2") {
-            isOnJob = "休假";
-        } else if(n.epyOnjob == "3") {
-            isOnJob = "离职";
-        }
-        $(".employee_table>table>tbody").append("<tr>"
-            + "<td class='staffNo' style='text-align: left'>" + n.epyId + "</td>"
-            + "<td class='staffName'>" + n.epyName + "</td>"
-            + "<td class='staffSex'>" + n.epySex + "</td>"
-            + "<td class='staffAge'>" + n.epyBirthday + "</td>"
-            + "<td class='staffPos'>" + n.epyPosition + "</td>"
-            + "<td class='staffId'>" + n.epyIdentity + "</td>"
-            + "<td class='staffTel'>" + n.epyContact + "</td>"
-            + "<td class='staffOnJob'>" + isOnJob + "</td>"
-            + "<td class='staffMark'>" + n.epyRemark + "</td>"
-            + "<td class='rowOper'>"
-            + "<button type='button' class='btn btn-primary row_delete' style='padding: 4px 8px;'>删除</button>"
-            + "<button type='button' class='btn btn-primary row_update' style='padding: 4px 8px;'>修改</button>"
-            + "</td>"
-            + "</tr>");
-    });
-}
-
-/**
  * 订单管理界面初始化
  */
 function initOrderManagement() {
     $(".ordermgr_table>table>tbody").empty();
     $.ajax({
-        url: serverHost + "/getorder",
+        url: config.serverHost + "/getorder",
         type: "get",
         //async: false,
         data: {},
@@ -1571,7 +1138,7 @@ function initReportCenter() {
     var yearMon = "" + myDate.getFullYear() + "-" + ((myDate.getMonth() + 1) < 10?
         "0"+(myDate.getMonth() + 1):""+(myDate.getMonth() + 1));
     $.ajax({
-        url: serverHost + "/uincrease?month=" + yearMon,
+        url: config.serverHost + "/uincrease?month=" + yearMon,
         type: "get",
         async: false,
         data:{},
@@ -1614,7 +1181,7 @@ function initReportCenter() {
 
 function initVIPMgrInfo(){
     $.ajax({
-        url: serverHost + "/users",
+        url: config.serverHost + "/users",
         type: "get",
         data:{},
         dataType: "json",
@@ -1852,7 +1419,7 @@ function createOrderNo(curDate) {
 function logout() {
     Ewin.confirm({title: "退出系统", message: "您确定要退出系统吗？"}).on(function(status){
        if(status) {
-           window.location.href = "./LogonPage.html";
+           window.location.href = "../LogonPage.html";
        }
     });
 }

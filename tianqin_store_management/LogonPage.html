@@ -5,27 +5,30 @@
     <title>登&nbsp;&nbsp;录</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type="text/css">
-        /*body{background: url(images/backgroud.jpg) no-repeat;background-size:cover;font-size: 16px;}*/
-        .form{background: rgba(255,255,255,0.2);width:400px;margin:100px auto;}
+       .form{
+           background: rgba(255,255,255,0.2);
+           width:400px;
+           margin:100px auto;
+       }
         #login_form{display: block;}
         #register_form{display: none;}
-        .fa{display: inline-block;top: 27px;left: 6px;position: relative;color: #ccc;}
-        input[type="text"],input[type="password"]{padding-left:26px;}
-        .checkbox{padding-left:21px;}
     </style>
-
-    <link href="./css/logon.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/font-awesome.min.css" rel="stylesheet">
+
     <script src="./js/common/jquery-3.2.1.min.js"></script>
+    <script src="./layer/layer.js"></script>
     <script type="text/javascript" src="./js/common/jquery.validate.min.js" ></script>
     <script src="./js/common/bootstrap.min.js"></script>
+    <script src="./js/common.js"></script>
     <script src="./js/userlogin.js"></script>
 </head>
 <body>
     <div style="text-align: center" class="page-header">
         <h1 class="form-title">欢迎使用天勤店铺管理系统</h1>
     </div>
+    <div id="loading" class="loading" style="display: none">登录中......</div>
     <div class="container" style="margin-top: 40px;">
             <form class="form form-horizontal" action="#" id="login_form">
                 <div style="height: 10px;"></div>
@@ -33,26 +36,30 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label"><span class="glyphicon glyphicon-user"></span></label>
                     <div class="col-md-8">
-                        <input class="logon-user form-control required" type="text" name="username" placeholder="用户名" value="" autofocus="autofocus" maxlength="20"/>
+                        <input class="logon-user form-control" type="text" name="username" placeholder="用户名" autofocus="autofocus"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label"><span class="glyphicon glyphicon-lock"></span></label>
-                    <div class="col-md-8"><input class="logon-pwd form-control required" name="password" type="password" placeholder="密码" value="" maxlength="8"/></div>
+                    <div class="col-md-8"><input class="logon-pwd form-control" name="password" type="password" placeholder="密码"/></div>
                 </div>
                 <div class="notice" style="display: none;"></div>
                 <div style="" class="col-md-offset-2">
-                    <div style="margin-left: 40px; display: inline-block"><button id="forgetpwd_btn" type="button" class="btn btn-primary">
-                        忘记密码
-                    </button></div>
-                    <div style="margin-left: 30px; display: inline-block"> <button type="submit" id="logon_button" class="btn btn-primary">登&nbsp;&nbsp;录</button></div>
+                    <div style="margin-left: 40px; display: inline-block">
+                        <button id="forgetpwd_btn" type="button" class="btn btn-primary">忘记密码</button>
+                    </div>
+                    <div style="margin-left: 30px; display: inline-block">
+                        <button type="submit" id="logon_button" class="btn btn-primary">登&nbsp;&nbsp;录</button>
+                    </div>
                 </div>
                 <div style="height: 13px;"></div>
             </form>
     </div>
     <div class="logon-footer">
         <div class="text-center version">V1.0.0.1</div>
-        <div class="text-center copy-right">版权所有©<span id="copyright_year">2017</span> 西安天勤网络科技有限公司</div>
+        <div class="text-center copy-right">版权所有©
+            <span id="copyright_year">2018</span>西安天勤网络科技有限公司
+        </div>
     </div>
 </body>
 </html>
